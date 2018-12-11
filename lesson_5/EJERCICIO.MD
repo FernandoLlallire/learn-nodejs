@@ -12,5 +12,5 @@ authenticar usuarios, luego de esto tambien tenemos que crear una url segura sol
 
 # Tareas a completar
   - encryptar la contraseña del CRUD de usuarios para complicar con las normas de seguridad y resguardo de datos
-  - utilizar (JWT package)[https://github.com/auth0/express-jwt] integrarlo y utilizarlo para la seguridad de las rutas
+  - utilizar bcrypt-nodejs integrarlo y utilizarlo para la seguridad de las rutas
   - en la ruta segura /dashboard, exponer los datos del token
