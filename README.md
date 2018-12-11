@@ -88,7 +88,6 @@ Internal modules (fs, http and friends)
 
 #### Project to Do: Grab-my-seat
 
-seed: https://github.corp.globant.com/NodeJS/flicks
 
 * Front end code will be an express application while APIs will be built using swagger (optional) and express
 * Front end app will use streaming to display video trailers using the video tag in HTML5
