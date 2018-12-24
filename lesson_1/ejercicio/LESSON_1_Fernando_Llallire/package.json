@@ -1,0 +1,18 @@
+{
+  "name": "ejercicio1",
+  "version": "1.0.0",
+  "description": "ejercicio 1 by fernando llallire",
+  "main": "app.js",
+  "scripts": {
+    "test": "node ./app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.globant.com/martin-caminoa/learn-nodejs"
+  },
+  "author": "fernando llallire",
+  "license": "ISC",
+  "dependencies": {
+    "yargs": "^12.0.5"
+  }
+}
