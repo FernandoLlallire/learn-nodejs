@@ -31,17 +31,20 @@ const  readPromise = (proto) =>
     })
   })
 /******************************************************************************/
-const obtainLogFileName = (proto) =>({
-  obtainLogFileName : () => readPromise(proto)
-  .then((jsonData) => {proto.logFile = JSON.parse(jsonData).nombre.toString();console.log(proto.logFile)})
-  .catch((err) => console.log(err))
-})
+
 
 const updateFile = (proto) =>({
   updateFile : () => openPromise(proto)
   .catch((data)=>createPromise(data))
   .then((data)=>appendPromise(data))
+  .then((status) => console.log(status))
 })
+
+const getFileNamePromise = (proto) =>({
+  getFileNamePromise : () => readPromise(proto)
+  .then((jsonData) => JSON.parse(jsonData).nombre)
+})
+
 
 const setJsonFile = (proto) => ({
   setJsonFile : (fileName) => {proto.jsonFileName = fileName}
@@ -58,27 +61,27 @@ const readFileName = (proto) => ({
   }
 })
 
-const fileFactory = (jsonFileName) => {
+const fileFactory = (logFile) => {
   const proto = {
-    jsonFileName
+    logFile
   }
-  // obtainLogFileName(proto).obtainLogFileName();
+  // console.log(proto)
   return Object.assign(
     {},
     updateFile(proto),
     setJsonFile(proto),
-    setMessage(proto),
-    obtainLogFileName(proto)
+    setMessage(proto)
+  )
+}
+
+const logFile = (jsonFileName) => {
+  const proto = {
+    jsonFileName
+  }
+  return Object.assign(
+    proto,
+    getFileNamePromise(proto)
   )
 }
 exports.fileFactory = fileFactory;
-// exports.fileObject =  (fileName, msg) => {
-//   const proto = {
-//     fileName,
-//     msg
-//   }
-//   return Object.assign(
-//     {},
-//     updateFile(proto)
-//   )
-// };
+exports.logFile = logFile;
