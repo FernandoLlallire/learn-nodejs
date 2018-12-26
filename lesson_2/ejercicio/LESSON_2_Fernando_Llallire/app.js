@@ -1,17 +1,17 @@
-const express = require("express");
 const port = 8000;
+var express = require('express');
 let app = express();
-const router = express.Router();
-
-const idMiddleware = (req, res, next) => {
+let routes = require("./routes")
+/*const idMiddleware = (req, res, next) => {
   res.send("entro al controller");
   next();
 };
 const idController = (req,res) => {
  res.send("entro al controller");
-};
-router.use("/", idMiddleware);
-router.get("/",idController);
+};*/
+//router.use("/", idMiddleware);
+
+app.use("/",routes)
 app.listen(8000, () => (console.log("Server on localhost:"+port)));
 
 /*const argv = require('yargs').argv;
