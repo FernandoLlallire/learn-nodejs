@@ -1,28 +1,15 @@
+
+const express = require('express');
+const routes = require("./routes");
 const port = 8000;
-var express = require('express');
 let app = express();
-let routes = require("./routes")
-/*const idMiddleware = (req, res, next) => {
-  res.send("entro al controller");
-  next();
-};
-const idController = (req,res) => {
- res.send("entro al controller");
-};*/
-//router.use("/", idMiddleware);
 
 app.use("/",routes)
 app.listen(8000, () => (console.log("Server on localhost:"+port)));
 
-/*const argv = require('yargs').argv;
-const file =  require('./File.js');
-const msgs = require('./Msgs.js');
-const express = require("express");
-const port = 8000;
+/*
 // ejecucion mediante ./app.js --msg="Demo MSG"
-let app = express();
 
-const msg = argv.msg;
 const messages = msgs.msgFactory();
 const logName = file.logFile("config.json");
 
