@@ -1,20 +1,19 @@
 const messenger = (proto) => ({
-  messenger : () => proto.msgs.join(" ") +"\n"
+  messenger : () => proto.msgs
 })
 
 const concatenate = (proto) => ({
-  concatenate : (newstring) => {
-    proto.msgs.push(newstring);
+  concatenate : (id,msg) => {
+    proto.msgs = {"uuid4":id,"msg":msg};
   }
 })
 
 const msgFactory = () => {
   const proto = {
-    msgs : []
   }
 
   return Object.assign(
-    {},
+    proto,
     messenger(proto),
     concatenate(proto)
   )

@@ -1,22 +1,24 @@
 const uuid4 = require("uuid4");
 const file =  require('./File.js');
 const msgs = require('./Msgs.js');
-//const argv = require('yargs').argv;
-//const msg = argv.msg;
 
 const id = uuid4();
-const msgs = [];
+const messages = msgs.msgFactory();
+const logName = file.logFile("config.json");
 module.exports = {
-    addMsg : (req,res) => {
-        if(!req.params.id){
-            return res.status(404).render("No pasaste ID")
+    addMsg : (req,res,next) => {
+        if(!req.query.msg){
+            return res.status(404).render("Ingrese el mensaje con el siguiente formato \"localhost:8000?msg=MensajeParaGuardar\"");
         }
-        res.send("El numero de usuario es : " + req.params.id)
-    },
-    principalPage : (req,res,next) => {
-      //  res.send("Pagina principal \n Ingrese usuario por get \"localhost:800/:id\"" + JSON.stringify(testing));
-        testing.push({hola: "asdasd", uuid4: id});
-        res.send("Pagina principal \n Ingrese usuario por get \"localhost:800/:id\"" );
-        next();
-    }
+        logName.getFileNamePromise().then((fileName) => {
+            messages.concatenate(id,req.query.msg);
+            const logFileToEdit = file.fileFactory(fileName);
+            logFileToEdit.setMessage(messages.messenger());
+            logFileToEdit.updateLog()
+            })
+        /*.then((fileName) => {
+            logFile.updateFile();
+          })*/
+          res.send("Log file update with the new object")
+        }
 }

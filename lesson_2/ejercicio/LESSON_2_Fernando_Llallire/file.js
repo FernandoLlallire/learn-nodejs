@@ -23,11 +23,33 @@ const appendPromise = (proto) =>
     return resolve("File Update");
   })
 })
+
+const writePromise = (proto) =>
+  new Promise((resolve, reject) => {
+    console.log(JSON.stringify(proto.msg))
+    proto.objElement ? proto.objElement.push(proto.msg) : proto.msg;
+    fs.writeFile(proto.logFile, JSON.stringify(proto.objElement), (err) => {
+      if(err) return reject(err);
+      return resolve("Log file update with the new object");
+    })
+  })
+
 const  readPromise = (proto) =>
   new Promise((resolve, reject) => {
     fs.readFile(proto.jsonFileName,'utf8',(err,data) => {
       if(err) return reject(err);
       return resolve(data);
+    })
+  })
+
+  const  readLogPromise = (proto) =>
+  new Promise((resolve, reject) => {
+    fs.readFile(proto.logFile,'utf8',(err,data) => {
+      if(err) return reject(err);
+      if(data){
+        proto.objElement = JSON.parse(data);
+      }
+      return resolve(proto);
     })
   })
 /******************************************************************************/
@@ -37,6 +59,14 @@ const updateFile = (proto) =>({
   updateFile : () => openPromise(proto)
   .catch((data)=>createPromise(data))
   .then((data)=>appendPromise(data))
+  .then((status) => console.log(status))
+})
+
+const updateLog = (proto) => ({
+  updateLog : () => openPromise(proto)
+  .catch((proto) => createPromise(proto))
+  .then((proto) => readLogPromise(proto))
+  .then((proto) => writePromise(proto))
   .then((status) => console.log(status))
 })
 
@@ -62,15 +92,15 @@ const readFileName = (proto) => ({
 })
 
 const fileFactory = (logFile) => {
-  const proto = {
+  let proto = {
     logFile
   }
-  // console.log(proto)
   return Object.assign(
-    {},
+    proto,
     updateFile(proto),
     setJsonFile(proto),
-    setMessage(proto)
+    setMessage(proto),
+    updateLog(proto)
   )
 }
 
