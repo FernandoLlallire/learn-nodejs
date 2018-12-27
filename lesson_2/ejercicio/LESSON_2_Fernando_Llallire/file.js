@@ -26,8 +26,11 @@ const appendPromise = (proto) =>
 
 const writePromise = (proto) =>
   new Promise((resolve, reject) => {
-    console.log(JSON.stringify(proto.msg))
-    proto.objElement ? proto.objElement.push(proto.msg) : proto.msg;
+    if(!proto.hasOwnProperty("objElement")){
+      proto.objElement = [proto.msg];
+    }else{
+      proto.objElement.push(proto.msg);
+    }
     fs.writeFile(proto.logFile, JSON.stringify(proto.objElement), (err) => {
       if(err) return reject(err);
       return resolve("Log file update with the new object");

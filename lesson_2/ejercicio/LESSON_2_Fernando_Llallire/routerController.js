@@ -13,6 +13,7 @@ module.exports = {
         logName.getFileNamePromise().then((fileName) => {
             messages.concatenate(id,req.query.msg);
             const logFileToEdit = file.fileFactory(fileName);
+            //console.log(messages.messenger());
             logFileToEdit.setMessage(messages.messenger());
             logFileToEdit.updateLog()
             })

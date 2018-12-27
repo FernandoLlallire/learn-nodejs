@@ -1,10 +1,11 @@
 const messenger = (proto) => ({
-  messenger : () => proto.msgs
+  messenger : () => proto.msg
 })
 
 const concatenate = (proto) => ({
   concatenate : (id,msg) => {
-    proto.msgs = {"uuid4":id,"msg":msg};
+    proto.msg = {uuid4: id, msg};
+    //console.log(JSON.stringify(proto.msg));
   }
 })
 
