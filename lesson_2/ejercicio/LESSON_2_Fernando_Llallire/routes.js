@@ -1,7 +1,7 @@
-var express = require("express");
-var routerController = require("./routerController");
+const  express = require("express");
+const routerController = require("./routerController");
 
-var router = express.Router();
+let router = express.Router();
 
 router.get("/", routerController.addMsg);
 module.exports = router;

@@ -66,7 +66,7 @@ const  readPromise = (proto) =>
 /******************************************************************************/
 const readFile = (proto) => ({
   readFile : () => readFilePromise(proto)
-  .then(data => {console.log(data);return data})
+  .then(data => JSON.stringify(data))
 })
 
 const updateFile = (proto) =>({
