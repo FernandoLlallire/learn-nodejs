@@ -8,7 +8,7 @@ module.exports = {
     promociones : (req,res) => {
         model.existProductos()
         .catch(() => promoFile.getFileNamePromise()
-            .then((fileName) => { 
+            .then((fileName) => {
                 const promoDataFile = file.fileFactory(fileName);
                 promoDataFile.readFile()
                 .then(mensaje => model.setProductos(mensaje));
@@ -19,10 +19,12 @@ module.exports = {
         .then(
             () => {
                 console.log("Los productos estan cargados en el cache");
-                console.log("datos: "+ model.getProductos())
+                model.getProductos()
+                .then(promociones =>
+                  res.render('promociones', { title: 'Promociones', promociones: promociones})
+                )
             }
         )
-
         /*client.exists("products", (err, reply) =>{
             if(reply){
                 console.log("Los productos estan cargados en el cache");
@@ -30,8 +32,8 @@ module.exports = {
                     res.send(JSON.parse(reply)) ;
                 })
             }else{
-                
-                
+
+
             }
         })*/
     }

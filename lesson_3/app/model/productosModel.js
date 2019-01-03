@@ -8,7 +8,7 @@ let client = redis.createClient(port, host);
 module.exports = {
     existProductos: () => new Promise((resolve, reject) => {
         client.exists("products", (err,reply) => {
-            if(reply){
+            if(reply==1){
                 return resolve();
             }
             return reject();
@@ -24,7 +24,10 @@ module.exports = {
         })
     },
     getProductos: () =>
-        client.get("products", (err,reply) => 
-            JSON.parse(reply)
-        )
+      new Promise((resolve,reject) => {
+        client.get("products", (err,reply) =>{
+          if (err) reject(err);
+          resolve(JSON.parse(reply));
+        })
+      })
 }
