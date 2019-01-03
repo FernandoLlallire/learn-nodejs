@@ -11,7 +11,6 @@ let updateCache = fileName => {
     se corrige en de esta manera
     https://stackoverflow.com/questions/42494823/json-parse-returns-string-instead-of-object
     */
-   console.log("aca paso por aca???") 
 };
 
 module.exports = {
@@ -19,7 +18,7 @@ module.exports = {
         model.existProductos()
         .catch(() => promoFile.getFileNamePromise()
             .then((fileName) => {
-                updateCache(fileName);
+                updateCache();
             })
         )
         .then(
