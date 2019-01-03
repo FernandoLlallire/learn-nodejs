@@ -7,7 +7,7 @@ const config = {
 	appRoot: __dirname // required config
 };
 
-app.get("/hello/:name", (req, res) => {
+app.get("/hello/:name?", (req, res) => {
 	const response = {
 		"message": `Hello World ${req.params.name}`
 	}
