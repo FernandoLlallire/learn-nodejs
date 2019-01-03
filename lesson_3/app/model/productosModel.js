@@ -27,7 +27,7 @@ module.exports = {
       new Promise((resolve,reject) => {
         client.get("products", (err,reply) =>{
           if (err) reject(err);
-          resolve(JSON.parse(reply));
+          resolve(JSON.parse(reply))
         })
       })
 }

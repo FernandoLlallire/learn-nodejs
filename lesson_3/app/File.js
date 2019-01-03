@@ -60,13 +60,13 @@ const  readPromise = (proto) =>
   new Promise((resolve, reject) => {
     fs.readFile(proto.logFile,'utf8',(err,data) => {
       if(err) return reject(err);
+      //console.log(data)
       return resolve(data);
     })
   })
 /******************************************************************************/
 const readFile = (proto) => ({
   readFile : () => readFilePromise(proto)
-  .then(data => JSON.stringify(data))
 })
 
 const updateFile = (proto) =>({

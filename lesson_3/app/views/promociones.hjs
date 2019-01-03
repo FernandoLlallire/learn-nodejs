@@ -5,10 +5,10 @@
   </head>
   <body>
     <h1>{{ title }}</h1>
-    <p>Welcome to {{ title }}.</p>
-    {{#promociones}}
-    <b>{{name}}</b>
-  {{/promociones}}
-  {{productos}}
+    <ul>
+    {{#promos}}
+    <li>{{nombre}}</li>
+    {{/promos}}
+    </ul>
   </body>
 </html>
