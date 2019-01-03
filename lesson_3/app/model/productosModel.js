@@ -7,27 +7,36 @@ let client = redis.createClient(port, host);
 
 module.exports = {
     existProductos: () => new Promise((resolve, reject) => {
-        client.exists("products", (err,reply) => {
+        client.exists("promos", (err,reply) => {
             if(reply==1){
                 return resolve();
             }
             return reject();
         })
     }),
-    setProductos: (productosString) => {
-        client.set("products", productosString, (err,reply) => {
-            if(reply === "OK"){
-                console.log("se guardo los valores de las promociones en redis");
-            }else{
-                console.log("Problema al escribir en redis");
-            }
+    
+    setProductos: (promos) => 
+      new Promise((resolve,reject) => {
+          client.set("promos", promos, (err,reply) =>{
+            if (reply==="OK") resolve();
+            reject();
         })
-    },
+    }),
+    
     getProductos: () =>
       new Promise((resolve,reject) => {
-        client.get("products", (err,reply) =>{
-          if (err) reject(err);
+        client.get("promos", (err,reply) =>{
+          if (!reply) reject();
           resolve(JSON.parse(reply))
         })
-      })
+      }),
+
+    cleanCache : () => 
+        new Promise((resolve,reject) => {
+            client.del("promos",(err,reply) => {
+                if (reply == true) resolve();
+                reject();
+            })
+        })
+    
 }
