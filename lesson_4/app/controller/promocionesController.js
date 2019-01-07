@@ -6,7 +6,7 @@ const promoFile = file.logFile("/src/app/config.json");
 module.exports = {
     promociones : (req,res) => {
         model.getProductos()
-        .then(promociones => res.send(promociones))
+        .then(promociones => {res.send(promociones)})
         .catch( () => res.status(204).send())
     },
     refresh : (req,res) => {
