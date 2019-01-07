@@ -1,21 +1,20 @@
 //const redis = require("redis");
 const mongoose = require('mongoose');
 const promos = require('../migrations/PromosArray');
-//let promociones = new promos({"_id": new mongoose.Types.ObjectId("359024423590")});
-
+const id = new mongoose.Types.ObjectId("359024423590");
 module.exports = {
 
     setProductos: (promosJson) =>
       new Promise((resolve,reject) => {
-        promos.remove({"_id": new mongoose.Types.ObjectId("359024423590")}).exec();
-        let promociones = new promos({"_id": new mongoose.Types.ObjectId("359024423590")});
+        promos.remove({"_id": id}).exec();
+        let promociones = new promos({"_id": id});
         JSON.parse(promosJson).promociones.forEach((element) => promociones.promosChildren.push(element));
         promociones.save().then(doc => doc? resolve():reject())
     }),
 
     getProductos: () =>
       new Promise((resolve,reject) => {
-        promos.findOne({"_id": new mongoose.Types.ObjectId("359024423590")})
+        promos.findOne({"_id": id})
         /*Recordar que las query no son promesas https://mongoosejs.com/docs/promises.html*/
         .then(doc => {
           if(doc){
@@ -31,7 +30,7 @@ module.exports = {
 //return resolve(JSON.stringify(doc.promosChildren[])
     cleanCache : () =>
         new Promise((resolve,reject) => {
-          promos.remove({"_id": new mongoose.Types.ObjectId("359024423590")}).exec()
+          promos.remove({"_id": id}).exec()
           .then(resolve()).catch(reject())
         })
 
