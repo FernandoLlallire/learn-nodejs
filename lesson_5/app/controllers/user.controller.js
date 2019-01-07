@@ -1,19 +1,21 @@
 var User = require('../models/User');
+let bcrypt = require('bcrypt');
 
 exports.create = (req, res) => {
-  const newUser = new User({
-    name: req.body.name,
-    username: req.body.username,
-    password: req.body.password
-  });
-
-  newUser.save()
+  bcrypt.hash(req.body.password, 5, function(err, hash) {
+    const newUser = new User({
+      name: req.body.name,
+      username: req.body.username,
+      password: hash
+    });
+    newUser.save()
   .then(data => {
       res.send(data);
   }).catch(err => {
       res.status(500).send({
           message: err.message || "Some error occurred while creating the User."
       });
+  });
   });
 };
 
