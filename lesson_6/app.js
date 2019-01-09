@@ -1,17 +1,12 @@
 const app = require('express')();
 const http = require('http').Server(app);
-const io = require('socket.io')(http);
-const route = require('route/route')
-const userDisconnected = ()  => console.log('user disconnected');
+const route = require('./route/route');
+const io = require('./socketServer');
 
-io.on('connection', function(socket){
-
-  socket.on('disconnect', userDisconnected);
-
-  socket.on('chat message', function(msg, username){
-    io.emit('chat message', `${username}: ${msg}`);
-  });
-});
+app.use('/', route);
+app.get('*', (req,res) => res.send("Lesson 6 => localhost:3000/chat"));
+io.initialize(http);
+io.connect();
 
 http.listen(3000, function(){
   console.log('listening on *:3000');
