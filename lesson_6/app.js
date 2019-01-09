@@ -1,15 +1,11 @@
-var app = require('express')();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-
+const app = require('express')();
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+const route = require('route/route')
 const userDisconnected = ()  => console.log('user disconnected');
 
-app.get('/', function(req, res){
-  res.sendFile(__dirname + '/index.html');
-});
-
 io.on('connection', function(socket){
-  
+
   socket.on('disconnect', userDisconnected);
 
   socket.on('chat message', function(msg, username){
