@@ -1,5 +1,5 @@
-var User = require('../models/User');
-let bcrypt = require('bcryptjs');
+const User = require('../models/User');
+const bcrypt = require('bcryptjs');
 
 exports.create = (req, res) => {
   bcrypt.hash(req.body.password, 5, function(err, hash) {
