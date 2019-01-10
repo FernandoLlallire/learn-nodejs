@@ -1,12 +1,13 @@
 // grab the things we need
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const videoSchema = require('./Video').schema;
 // create a schema
 var userSchema = new Schema({
   name: String,
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  videos : [videoSchema],
   created_at: Date,
   updated_at: Date
 });

@@ -1,12 +1,14 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
-
+const videoDefault = [{url:'http://thenewcode.com/assets/videos/editable.mp4', description:'editable'},
+                      {url:'http://thenewcode.com/assets/videos/after.mp4', description:'after'}]
 exports.create = (req, res) => {
   bcrypt.hash(req.body.password, 5, function(err, hash) {
     const newUser = new User({
       name: req.body.name,
       username: req.body.username,
-      password: hash
+      password: hash,
+      videos: videoDefault
     });
     newUser.save()
   .then(data => {
