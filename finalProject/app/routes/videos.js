@@ -24,7 +24,8 @@ const videoCreateSchema = {
 
  
   router.get('/', videoController.findAll);
-
+  router.get('/:url', videoController.findOne);
+  router.delete('/:url', videoController.delete);
   
 /*  const videoController = require('../controllers/video.controller');
   

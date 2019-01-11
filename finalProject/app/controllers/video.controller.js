@@ -20,6 +20,20 @@ exports.findOne = (req,res)=>{
     .then(user => user.videos.forEach(element => {
         console.log(element)
     }))
-};
+}; 
 */
 
+exports.findOne = (req, res) => {
+    User.findOne({'videos.url':"http://thenewcode.com/assets/videos/editable.mp4"})
+    .then(user =>{
+        const videoFilter = user.videos.filter((video) => video.url == req.body.url)._id
+        res.send(videoFilter)
+    })
+
+};
+
+exports.delete = (req, res) => {
+    User.findOneAndUpdate({'videos.url':"http://thenewcode.com/assets/videos/editable.mp4"},
+   {'$pull':{'videos':{"url":"http://thenewcode.com/assets/videos/after.mp4"}}})
+   .then(res.send("elemento eliminado"))//probar por que lo toma como updatiado siempre!
+};
