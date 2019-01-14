@@ -11,6 +11,6 @@ const video = require('./routes/videos');
 const app = express();
 app.use(bodyParser.json());//Para poder obtener los datos del body
 app.use(bodyParser.urlencoded());//para el parseo
-app.use('/user/video', video);
-app.use('/user', user);
+app.use('/video', video);
+app.use('/', user);
 module.exports = app;
