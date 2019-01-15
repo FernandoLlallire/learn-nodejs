@@ -6,7 +6,7 @@
 </head>
 <body>
     <h4>Crear usuario</h4>
-    <form action="/" method="post" enctype="application/x-www-form-urlencoded">
+    <form action="/createUser" method="post" enctype="application/x-www-form-urlencoded">
         <input type="text" name="name" id="name" placeholder="Ingrese nombre">
         <br>
         <input type="email" name="userName" id="userName" placeholder="Ingrese su mail">
@@ -18,10 +18,10 @@
         <input type="submit" value="registrar">
     </form>
     <h4>LogIn</h4>
-    <form action="/list" method="get" enctype="application/x-www-form-urlencoded">
-        <input type="text" name="name" id="name" placeholder="Ingrese nombre">
-        <br>
+    <form action="/logIn" method="get" enctype="application/x-www-form-urlencoded">
         <input type="email" name="userName" id="userName" placeholder="Ingrese su mail">
+        <br>
+        <input type="password" name="password" id="password" placeholder="password">
         <br>
         <input type="submit" value="Logear">
         <script>fetch('https://jsonplaceholder.typicode.com/users').then(r=>r.json()).then(r=>console.log(r))</script>

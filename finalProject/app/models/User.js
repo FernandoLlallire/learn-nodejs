@@ -5,7 +5,7 @@ const videoSchema = require('./Video').schema;
 // create a schema
 var userSchema = new Schema({
   name: String,
-  username: { type: String, required: true, unique: true },
+  userName: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   videos : [videoSchema],
   created_at: Date,
