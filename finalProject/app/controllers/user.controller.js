@@ -2,7 +2,6 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const path = require('path');
 const fetch = require("node-fetch");
-
 const videoDefault = [{url:'http://thenewcode.com/assets/videos/editable.mp4', description:'editable'},
                       {url:'http://thenewcode.com/assets/videos/after.mp4', description:'after'}];
 
@@ -13,15 +12,15 @@ exports.index = (req,res) => {
 };
 
 exports.findUserName = (req,res) =>{
-  res.status(200).send(req.params.username)
+  res.status(200).json("req.params.username")
   //User.findOne({username:req.params.username}).exec()
-  //.then(user => res.send(user)) 
+  //.then(user => res.send(user))
 }
 
 exports.create = (req, res) => {
   console.log("Corriendo el fetch")
-  fetch('10.0.2.2:3030/fer')
-    .then(response => res.send(response)) // expecting a json response
+  fetch('http://127.0.0.1:3000/holaFer')
+    .then(response => response.json()) // expecting a json response
     .then(json => res.send(json))
     .catch(err=>res.json(err))
   //console.log(path.join(routeDomain, req.body.name))
@@ -70,14 +69,14 @@ exports.findOne = (req, res) => {
     if(!user) {
       return res.status(404).send({
         message: "User not found with id " + req.params.userId
-      });            
+      });
     }
     res.send(user);
   }).catch(err => {
     if(err.kind === 'ObjectId') {
       return res.status(404).send({
         message: "User not found with id " + req.params.userId
-      });                
+      });
     }
     return res.status(500).send({
       message: "Error retrieving User with id " + req.params.userId
@@ -101,7 +100,7 @@ exports.update = (req, res) => {
     if(err.kind === 'ObjectId') {
       return res.status(404).send({
         message: "User not found with id " + req.params.userId
-      });                
+      });
     }
     return res.status(500).send({
       message: "Error updating User with id " + req.params.userId
@@ -122,7 +121,7 @@ exports.delete = (req, res) => {
     if(err.kind === 'ObjectId' || err.name === 'NotFound') {
       return res.status(404).send({
         message: "User not found with id " + req.params.userId
-      });                
+      });
     }
     return res.status(500).send({
       message: "Could not delete User with id " + req.params.userId
