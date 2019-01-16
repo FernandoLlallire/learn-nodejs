@@ -18,12 +18,11 @@
         <input type="submit" value="registrar">
     </form>
     <h4>LogIn</h4>
-    <form action="/logIn" method="get" enctype="application/x-www-form-urlencoded">
+    <form action="/logIn" method="post" enctype="application/x-www-form-urlencoded">
         <input type="email" name="userName" id="userName" placeholder="Ingrese su mail">
         <br>
         <input type="password" name="password" id="password" placeholder="password">
         <br>
         <input type="submit" value="Logear">
-        <script>fetch('https://jsonplaceholder.typicode.com/users').then(r=>r.json()).then(r=>console.log(r))</script>
 </body>
 </html>

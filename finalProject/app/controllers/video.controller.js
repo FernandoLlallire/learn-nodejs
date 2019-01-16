@@ -3,7 +3,7 @@ const Video = require('../models/Video');
 /*Aca el middleware tiene que validarme el token y me deja en el body el id que tiene*/
 
 exports.findAll = (req,res) => {
-    User.findById(req.body.id)
+    User.findOne({_id:req.token._id,userName:req.token.userName})
     .then(user => res.json(user.videos))
     .catch(err => {
         res.status(500).send({ message: err.message || "Some error occurred while retrieving videos."})

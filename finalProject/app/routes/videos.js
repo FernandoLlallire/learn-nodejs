@@ -4,6 +4,8 @@ const User = require('../models/User');
 const expressJoiMiddleware = require('express-joi-middleware');
 const Joi = require('joi');
 const videoController = require('../controllers/video.controller');
+const middleware = require('../middleware/Midleware');
+
 const videoCreateSchema = {
     body: {
         url: Joi.string().required(),
@@ -21,22 +23,11 @@ const videoCreateSchema = {
   const options = {
     wantResponse: true,
   };
+  
+  router.use(middleware.verifyToken);
+  router.get('/', videoController.findAll);//Aca vamos a listar
+  router.get('/:url', videoController.findAll);//Aca vamos a editar
+  router.get('/new', videoController.findAll);//Aca vamos a agregar
+  router.get('/delete',videoController.findAll);//Aca vamos a borrar
 
- 
-  router.get('/', videoController.findAll);
-  router.get('/:url', videoController.findOne);
-  router.delete('/:url', videoController.delete);
-  
-/*  const videoController = require('../controllers/video.controller');
-  
-  router.post('/', expressJoiMiddleware(videoCreateSchema, options), videoController.create);
-  
-  router.get('/list', videoController.findAll);
-  
-  router.get('/:userId', videoController.findOne);
-  
-  router.put('/:userId', expressJoiMiddleware(videoUpdateSchema, options), videoController.update);
-  
-  router.delete('/:userId', videoController.delete);
-  */
   module.exports = router;

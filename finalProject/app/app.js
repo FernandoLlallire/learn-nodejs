@@ -4,13 +4,12 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const user = require('./routes/users');
 const video = require('./routes/videos');
-//var routes = require('./routes/index');
-//var users = require('./routes/users');
-//let promociones = require('./routes/promocionesRoutes');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 app.use(bodyParser.json());//Para poder obtener los datos del body
 app.use(bodyParser.urlencoded());//para el parseo
+app.use(cookieParser());
 app.use('/video', video);
 app.use('/', user);
 module.exports = app;

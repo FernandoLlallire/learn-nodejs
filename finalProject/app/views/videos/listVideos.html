@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Video List</title>
+</head>
+<body>
+    <script>
+    fetch('localhost:3030/api/list')
+    .then(rawResponse => rawResponse.json())
+    .then(response => console.log(response))
+    </script>
+</body>
+</html>

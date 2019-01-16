@@ -4,7 +4,6 @@ const router = express.Router();
 const expressJoiMiddleware = require('express-joi-middleware');
 const Joi = require('joi');
 const userController = require('../controllers/user.controller');
-const midleware = require('../controllers/indexMidleware');
 
 const userCreateSchema = {
     body: {
@@ -35,7 +34,7 @@ const userCreateSchema = {
   
   router.get('/', userController.index);
   router.post('/createUser', expressJoiMiddleware(userCreateSchema, options), userController.createUser);
-  router.post('/logIn',expressJoiMiddleware(userLogInSchema, options), userController.logIn);
+  router.post('/logIn', expressJoiMiddleware(userLogInSchema, options), userController.logIn);
 /*
   router.post('/', expressJoiMiddleware(userCreateSchema, options), userController.create);
 
@@ -52,7 +51,7 @@ const userCreateSchema = {
   router.get('/api',userController.findUserName);
   */
 
- router.post('/login', midleware.login);
- router.get('/dashboard',midleware.verifyToken,midleware.dashboard);
+ //router.post('/login', midleware.login);
+ //router.get('/dashboard',midleware.verifyToken,midleware.dashboard);
  
   module.exports = router;
