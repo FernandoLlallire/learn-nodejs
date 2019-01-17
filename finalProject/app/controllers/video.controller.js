@@ -4,7 +4,7 @@ const Video = require('../models/Video');
 
 exports.findAll = (req,res) => {
     User.findOne({_id:req.token._id,userName:req.token.userName})
-    .then(user => res.json(user.videos))
+    .then(user => res.status(200).json(user.videos))
     .catch(err => {
         res.status(500).send({ message: err.message || "Some error occurred while retrieving videos."})
     });
@@ -33,7 +33,13 @@ exports.findOne = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-    User.findOneAndUpdate({'videos.url':"http://thenewcode.com/assets/videos/editable.mp4"},
-   {'$pull':{'videos':{"url":"http://thenewcode.com/assets/videos/after.mp4"}}})
-   .then(res.send("elemento eliminado"))//probar por que lo toma como updatiado siempre!
+    //console.log(req.token)
+   // User.findOne({_id:req.token._id,userName:req.token.userName}).then(x=>console.log(x))
+
+    User.findOneAndUpdate({_id:req.token._id,userName:req.token.userName},
+   {'$pull':{'videos':{_id:req.params._id}}})
+    .then(user => res.status(200).send({message: "Video eliminado", user}))
+    .catch(err => {
+        res.status(500).send({ message: err.message || "Some error occurred while retrieving videos."})
+    });
 };

@@ -4,11 +4,19 @@
     <meta charset="UTF-8">
     <title>Video List</title>
 </head>
+
 <body>
-    <script>
-    fetch('localhost:3030/api/list')
-    .then(rawResponse => rawResponse.json())
-    .then(response => console.log(response))
-    </script>
+    <h3>Agregar un video</h3>
+    <form method="post">
+        <input type="text" id="urlVideo">
+        <br>
+        <input type="text" id="descriptionVideo">
+        <br>
+        <input type="submit" value="Agregar video" id="addVideo">
+    </form>
+    <h3>Lista de videos</h3>
+    <ul id='list'></ul>
+
+<script type="text/javascript" src="/public/videoList.js"></script>
 </body>
 </html>
