@@ -8,10 +8,10 @@ const userController = require('../controllers/user.controller');
 
 const userCreateSchema = {
     body: {
-      name: Joi.string().required().label("Your error message in here"),
-      userName: Joi.string().email().required().label("Your error message in here"),
-      password: Joi.string().required().label("Your error message in here"),
-      confirmPassword: Joi.any().valid(Joi.ref('password')).required().options({ language: { any: { allowOnly: 'passwords and confirmation must be equals.' } } }).label("Your error message in here"),
+      name: Joi.string().required(),
+      userName: Joi.string().email(),
+      password: Joi.string().required(),
+      confirmPassword: Joi.any().valid(Joi.ref('password')).required().options({ language: { any: { allowOnly: 'passwords and confirmation must be equals.' } } })
     },
   };
 

@@ -44,7 +44,9 @@ window.onload = function (){
     })
     document.getElementById('addVideo').addEventListener('click', (e) => {
         e.preventDefault();
-        console.log(document.getElementById("urlVideo").value);
-        console.log(document.getElementById("descriptionVideo").value);
+        console.log(JSON.stringify({url:document.getElementById("urlVideo").value,description:document.getElementById("descriptionVideo").value}))
+        fetch(`video/api/add`,{method:'post',body: JSON.stringify({url:document.getElementById("urlVideo").value,description:document.getElementById("descriptionVideo").value})})
+        .then(res=>res.json()).then(res=>console.log(res))
+
     });
 }

@@ -31,11 +31,8 @@ exports.findOne = (req, res) => {
     })
 
 };
-
+//https://stackoverflow.com/questions/44233791/fetch-can-you-pass-parameters-to-the-server
 exports.delete = (req, res) => {
-    //console.log(req.token)
-   // User.findOne({_id:req.token._id,userName:req.token.userName}).then(x=>console.log(x))
-
     User.findOneAndUpdate({_id:req.token._id,userName:req.token.userName},
    {'$pull':{'videos':{_id:req.params._id}}})
     .then(user => res.status(200).send({message: "Video eliminado", user}))
@@ -43,3 +40,10 @@ exports.delete = (req, res) => {
         res.status(500).send({ message: err.message || "Some error occurred while retrieving videos."})
     });
 };
+
+exports.add = (req,res) => {
+    console.log(req)
+    res.send({url:req.body.url, description:req.body.description})
+};
+
+//el problema es q el body esta vacio!"https://stackoverflow.com/questions/39842013/fetch-post-with-body-data-not-working-params-empty"
