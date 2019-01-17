@@ -27,14 +27,15 @@ const userCreateSchema = {
       userName: Joi.string().email().required()
     },
   };
-  
+
   const options = {
     wantResponse: true,
   };
-  
+
   router.get('/', userController.index);
   router.post('/createUser', expressJoiMiddleware(userCreateSchema, options), userController.createUser);
   router.post('/logIn', expressJoiMiddleware(userLogInSchema, options), userController.logIn);
+  router.get('/test', userController.test);
 /*
   router.post('/', expressJoiMiddleware(userCreateSchema, options), userController.create);
 
@@ -53,5 +54,5 @@ const userCreateSchema = {
 
  //router.post('/login', midleware.login);
  //router.get('/dashboard',midleware.verifyToken,midleware.dashboard);
- 
+
   module.exports = router;

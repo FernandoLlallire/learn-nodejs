@@ -35,7 +35,7 @@ exports.createUser = (req,res) => {
     .then(data => {
       //res.send(data);
       const objJwt = jwt.sign({_id:data._id,userName:data.userName},key);
-      res.cookie("logInUser",objJwt, { maxAge: 900000, httpOnly: true });
+      res.cookie("logInUser",objJwt, { maxAge: 900000, httpOnly: false });
       res.send({token : objJwt});
     })
     .catch(err => {
@@ -52,7 +52,7 @@ exports.logIn = (req,res) => {
     if(!user) {
       return res.status(404).send({
         message: "User not found with userName " + req.body.userName
-      });            
+      });
     }
     bcrypt.compare(req.body.password,user.password,(err,result) => {
       if(result){
@@ -64,17 +64,21 @@ exports.logIn = (req,res) => {
         res.status(401).send({message: "Contraseña incorrecta"});
       }
     })
-    
+
   }).catch(err => {
     if(err.kind === 'ObjectId') {
       return res.status(404).send({
         message: "User not found with username " + req.body.userName
-      });                
+      });
     }
     return res.status(500).send({
       message: "Error retrieving User with req.body.userName " + req.body.userName
     });
   });
+};
+
+exports.test = (req,res) => {
+  res.sendFile(path.join(__dirname,'/../views/users/listVideos.html'));
 };
 /*
 exports.findUserName = (req,res) =>{

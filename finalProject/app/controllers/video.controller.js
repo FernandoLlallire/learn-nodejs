@@ -11,7 +11,7 @@ exports.findAll = (req,res) => {
 };
 
 /*
-tenemos que hacer la bisqueda en base a esto 
+tenemos que hacer la bisqueda en base a esto
 https://coderwall.com/p/6v5rcw/querying-sub-documents-and-sub-sub-documents-in-mongoose
 */
 /*
@@ -20,7 +20,7 @@ exports.findOne = (req,res)=>{
     .then(user => user.videos.forEach(element => {
         console.log(element)
     }))
-}; 
+};
 */
 
 exports.findOne = (req, res) => {
