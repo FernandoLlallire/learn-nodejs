@@ -30,8 +30,10 @@ window.onload = function (){
             source.setAttribute('type', "video/mp4");
             video.appendChild(source);
             newUrl.setAttribute('placeholder', 'Nueva Url');
-            newUrl.id = 'newUrl';
-            newDescription.id = 'newDescription';
+            newUrl.setAttribute('class', 'newUrl');
+            newDescription.setAttribute('class', 'newDescription');
+            //newUrl.id = 'newUrl'; por q no puedo repetir id
+            //newDescription.id = 'newDescription';
             newDescription.setAttribute('placeholder', 'Nueva descripcion');
             divUpdate.setAttribute('class','divUpdate');
             /*Conecciones*/
@@ -55,13 +57,13 @@ window.onload = function (){
                 .then(res=>res.json())
                 .then(res=> window.location='/list')
             });
-            buttonUpdate.addEventListener('click', () => {
+            buttonUpdate.addEventListener('click', (event) => {
                 fetch('video/api/update',{
                     method:'put',
                     headers:{'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        newUrl: document.getElementById('newUrl').value,
-                        newDescription: document.getElementById('newDescription').value,
+                    body: JSON.stringify({//event.target.parentElement.querySelector('.newDescription').value
+                        newUrl: event.target.parentElement.querySelector('.newUrl').value,
+                        newDescription: event.target.parentElement.querySelector('.newDescription').value,
                         url: element.url,
                         description: element.description
                     })

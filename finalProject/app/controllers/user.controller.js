@@ -1,11 +1,10 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const path = require('path');
-const fetch = require("node-fetch");
 const jwt = require('jsonwebtoken');
-//const cookieParser = require('cookie-parser');
+const userModel = require('../models/user.model');
 const key = "secret";
-//const url = require('url');
+
 const videoDefault = [{url:'http://thenewcode.com/assets/videos/editable.mp4', description:'editable'},
                       {url:'http://thenewcode.com/assets/videos/after.mp4', description:'after'}];
 //http://thenewcode.com/assets/videos/ 
@@ -25,13 +24,7 @@ exports.createUser = (req,res) => {
   })
   .catch(err => res.send(err))
   .then(hash =>{
-    const newUser = new User({
-      name: req.body.name,
-      userName: req.body.userName,
-      password: hash,
-      videos: videoDefault
-    });
-    newUser.save()
+    userModel.saveNewUSer(req,hash,videoDefault)
     .then(data => {
       const objJwt = jwt.sign({_id:data._id,userName:data.userName},key);
       res.cookie("logInUser",objJwt, { maxAge: 900000, httpOnly: false });
@@ -46,7 +39,7 @@ exports.createUser = (req,res) => {
 };
 
 exports.logIn = (req,res) => {
-  User.findOne({userName:req.body.userName}).exec()
+  userModel.logInOnlyByName(req)//User.findOne({userName:req.body.userName}).exec()
   .then(user => {
     if(!user) {
       return res.status(404).send({
@@ -62,7 +55,7 @@ exports.logIn = (req,res) => {
       else{
         res.status(401).send({message: "Contraseña incorrecta"});
       }
-    })
+    });
 
   }).catch(err => {
     if(err.kind === 'ObjectId') {
@@ -76,6 +69,4 @@ exports.logIn = (req,res) => {
   });
 };
 
-exports.test = (req,res) => {
-  res.sendFile(path.join(__dirname,'/../views/users/listVideos.html'));
-};
+exports.videoList = (req,res) => res.sendFile(path.join(__dirname,'/../views/users/videoList.html'));

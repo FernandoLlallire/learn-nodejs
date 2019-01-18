@@ -1,7 +1,6 @@
 //const model = require("../models/indexModel");
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-let User = require('../models/User');
+const userModel = require('../models/user.model');
 //https://medium.freecodecamp.org/securing-node-js-restful-apis-with-json-web-tokens-9f811a92bb52
 const key = "secret";
 exports.verifyToken = (req,res,next) => {
@@ -17,17 +16,32 @@ exports.verifyToken = (req,res,next) => {
       res.redirect('/');
     }
 }
-exports.verifyAdd = (req,res,next) => {
-  //res.redirect('/list');
-  User.findOne({_id:req.token._id,userName:req.token.userName})
+exports.verifyRepeat = (req,res,next) => {
+  userModel.findUserByToken(req)
   .then(user => {
-    let repetead = false;
+    let repeated = false;
     user.videos.forEach(element => {
         if(req.body.url == element.url){
-          repetead=true;
+          repeated=true;
         }
     })
-    if (!repetead){
+    if (!repeated){
+      next();
+    }
+  })
+}
+
+exports.verifyRepeatNewVideo = (req,res,next) => {
+  userModel.findUserByToken(req)
+  .then(user => {
+    let repeated = false;
+    user.videos.forEach(element => {
+        if(req.body.newUrl == element.url){
+          repeated=true;
+        }
+    })
+    
+    if (!repeated){
       next();
     }
   })

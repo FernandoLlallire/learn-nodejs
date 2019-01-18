@@ -36,6 +36,6 @@ const userCreateSchema = {
   router.get('/', userController.index);
   router.post('/createUser', expressJoiMiddleware(userCreateSchema, options), userController.createUser);
   router.post('/logIn', expressJoiMiddleware(userLogInSchema, options), userController.logIn);
-  router.get('/list',middleware.verifyToken,(req,res) => res.sendFile(path.join(__dirname,'/../views/users/videoList.html')));
+  router.get('/list',middleware.verifyToken, userController.videoList);
 
   module.exports = router;
