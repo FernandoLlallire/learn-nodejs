@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const path = require('path');
 
 const expressJoiMiddleware = require('express-joi-middleware');
 const Joi = require('joi');
@@ -8,9 +9,9 @@ const userController = require('../controllers/user.controller');
 const userCreateSchema = {
     body: {
       name: Joi.string().required(),
-      userName: Joi.string().email().required(),
+      userName: Joi.string().email(),
       password: Joi.string().required(),
-      confirmPassword: Joi.any().valid(Joi.ref('password')).required().options({ language: { any: { allowOnly: 'passwords and confirmation must be equals.' } } }),
+      confirmPassword: Joi.any().valid(Joi.ref('password')).required().options({ language: { any: { allowOnly: 'passwords and confirmation must be equals.' } } })
     },
   };
 
@@ -35,7 +36,7 @@ const userCreateSchema = {
   router.get('/', userController.index);
   router.post('/createUser', expressJoiMiddleware(userCreateSchema, options), userController.createUser);
   router.post('/logIn', expressJoiMiddleware(userLogInSchema, options), userController.logIn);
-  router.get('/test', userController.test);
+  router.get('/list',(req,res) => res.sendFile(path.join(__dirname,'/../views/users/videoList.html')));
 /*
   router.post('/', expressJoiMiddleware(userCreateSchema, options), userController.create);
 

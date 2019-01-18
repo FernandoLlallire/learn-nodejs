@@ -26,8 +26,9 @@ const videoCreateSchema = {
 
   router.use(middleware.verifyToken);
   router.get('/api/list', videoController.findAll);//Aca vamos a listar
-  router.get('/:url', videoController.findAll);//Aca vamos a editar
-  router.get('/new', videoController.findAll);//Aca vamos a agregar
-  router.get('/delete',videoController.findAll);//Aca vamos a borrar
+  router.post('/api/add',videoController.add);
+  //router.get('/:url', videoController.findAll);//Aca vamos a editar
+  //router.get('/new', videoController.findAll);//Aca vamos a agregar
+  router.delete('/api/delete/:_id',videoController.delete);//Aca vamos a borrar
 
   module.exports = router;

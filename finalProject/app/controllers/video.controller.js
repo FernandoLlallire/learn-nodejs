@@ -4,7 +4,7 @@ const Video = require('../models/Video');
 
 exports.findAll = (req,res) => {
     User.findOne({_id:req.token._id,userName:req.token.userName})
-    .then(user => res.json(user.videos))
+    .then(user => res.status(200).json(user.videos))
     .catch(err => {
         res.status(500).send({ message: err.message || "Some error occurred while retrieving videos."})
     });
@@ -31,9 +31,24 @@ exports.findOne = (req, res) => {
     })
 
 };
-
+//https://stackoverflow.com/questions/44233791/fetch-can-you-pass-parameters-to-the-server
 exports.delete = (req, res) => {
-    User.findOneAndUpdate({'videos.url':"http://thenewcode.com/assets/videos/editable.mp4"},
-   {'$pull':{'videos':{"url":"http://thenewcode.com/assets/videos/after.mp4"}}})
-   .then(res.send("elemento eliminado"))//probar por que lo toma como updatiado siempre!
+    User.findOneAndUpdate({_id:req.token._id,userName:req.token.userName},
+   {'$pull':{'videos':{_id:req.params._id}}})
+    .then(user => res.status(200).send({message: "Video eliminado", user}))
+    .catch(err => {
+        res.status(500).send({ message: err.message || "Some error occurred while retrieving videos."})
+    });
 };
+
+exports.add = (req,res) => {
+    User.findOne({_id:req.token._id,userName:req.token.userName})
+    .then(user =>{
+       user.videos.push({url:req.body.url,description:req.body.description});
+       user.save()
+       .then(data => res.status(200).send({message: "Video agregado", data}))
+    }
+  )
+};
+
+//el problema es q el body esta vacio!"https://stackoverflow.com/questions/39842013/fetch-post-with-body-data-not-working-params-empty"

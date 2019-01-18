@@ -36,7 +36,8 @@ exports.createUser = (req,res) => {
       //res.send(data);
       const objJwt = jwt.sign({_id:data._id,userName:data.userName},key);
       res.cookie("logInUser",objJwt, { maxAge: 900000, httpOnly: false });
-      res.send({token : objJwt});
+      //res.send({token : objJwt});
+      res.redirect('/list');
     })
     .catch(err => {
       res.status(500).send({
@@ -57,8 +58,9 @@ exports.logIn = (req,res) => {
     bcrypt.compare(req.body.password,user.password,(err,result) => {
       if(result){
         const objJwt = jwt.sign({_id:user._id,userName:user.userName},key);
-        res.cookie("logInUser",objJwt, { maxAge: 900000, httpOnly: true });
-        res.send({token : objJwt});
+        res.cookie("logInUser",objJwt, { maxAge: 900000, httpOnly: false });
+        //res.send({token : objJwt});
+        res.redirect('/list');
       }
       else{
         res.status(401).send({message: "Contraseña incorrecta"});
