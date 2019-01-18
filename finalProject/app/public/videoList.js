@@ -49,8 +49,9 @@ window.onload = function (){
           method:'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({url:document.getElementById("urlVideo").value,description:document.getElementById("descriptionVideo").value})
-        })
-        .then(res=>res.json()).then(res=>console.log(res))
+        }).catch(err=>res.send(err))
+        .then(response=>response.json())
+        .then(reponse=> window.location='/list')
 
     });
 }

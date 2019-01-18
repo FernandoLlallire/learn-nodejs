@@ -8,7 +8,7 @@ const key = "secret";
 //const url = require('url');
 const videoDefault = [{url:'http://thenewcode.com/assets/videos/editable.mp4', description:'editable'},
                       {url:'http://thenewcode.com/assets/videos/after.mp4', description:'after'}];
-
+//http://thenewcode.com/assets/videos/ 
 exports.index = (req,res) => {
   res.sendFile(path.join(__dirname,'/../views/users/userForm.html'));
 };
