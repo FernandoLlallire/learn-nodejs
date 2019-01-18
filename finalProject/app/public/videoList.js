@@ -12,6 +12,10 @@ window.onload = function (){
             const h3 = document.createElement('h3');
             const buttonDelete = document.createElement('button');
             const buttonUpdate = document.createElement('button');
+            const divUpdate = document.createElement('div');
+            const formUpdate = document.createElement('form');
+            const newUrl = document.createElement('input');
+            const newDescription = document.createElement('input');
             /*Atributos */
             buttonUpdate.setAttribute('type','button');
             buttonUpdate.innerText='Update';
@@ -25,31 +29,55 @@ window.onload = function (){
             source.setAttribute('src', element.url);
             source.setAttribute('type', "video/mp4");
             video.appendChild(source);
+            newUrl.setAttribute('placeholder', 'Nueva Url');
+            newUrl.id = 'newUrl';
+            newDescription.id = 'newDescription';
+            newDescription.setAttribute('placeholder', 'Nueva descripcion');
+            divUpdate.setAttribute('class','divUpdate');
             /*Conecciones*/
+            formUpdate.appendChild(newDescription);
+            formUpdate.appendChild(newUrl);
+            formUpdate.appendChild(buttonUpdate);
+            divUpdate.appendChild(formUpdate);
             div.appendChild(h3);
             div.appendChild(video);
-            div.appendChild(buttonUpdate);
+            div.appendChild(divUpdate);
             div.appendChild(buttonDelete);
             li.appendChild(div);
             ul.appendChild(li);
             /*Eventos*/
             buttonDelete.addEventListener('click', () => {
-                fetch(`video/api/delete/${element._id}`,{method:'delete'})
+                fetch('video/api/delete',{
+                    method:'delete',
+                    headers:{'Content-Type': 'application/json'},
+                    body:JSON.stringify({_id:element._id})
+                })
                 .then(res=>res.json())
                 .then(res=> window.location='/list')
             });
             buttonUpdate.addEventListener('click', () => {
-                console.log(element);
+                fetch('video/api/update',{
+                    method:'put',
+                    headers:{'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        newUrl: document.getElementById('newUrl').value,
+                        newDescription: document.getElementById('newDescription').value,
+                        url: element.url,
+                        description: element.description
+                    })
+                })
+                .then(response=>response.json())
+                .then(reponse=> window.location='/list')
             });
         });
     })
     document.getElementById('addVideo').addEventListener('click', (e) => {
         e.preventDefault();
-        fetch(`video/api/add`,{
+        fetch('video/api/add',{
           method:'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({url:document.getElementById("urlVideo").value,description:document.getElementById("descriptionVideo").value})
-        }).catch(err=>res.send(err))
+        })//.catch(err=>res.send(err))
         .then(response=>response.json())
         .then(reponse=> window.location='/list')
 

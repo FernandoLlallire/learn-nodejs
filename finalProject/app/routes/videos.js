@@ -6,7 +6,7 @@ const Joi = require('joi');
 const videoController = require('../controllers/video.controller');
 const middleware = require('../middleware/Midleware');
 
-const videoCreateSchema = {
+const videoAddSchema = {
     body: {
         url: Joi.string().required(),
         description: Joi.string().required()
@@ -16,18 +16,24 @@ const videoCreateSchema = {
   const videoUpdateSchema = {
     body: {
         url: Joi.string().required(),
-        description: Joi.string().required()
+        description: Joi.string().required(),
+        newUrl: Joi.string().required(),
+        newDescription: Joi.string().required()
     },
   };
-
+  const videoDeleteSchema = {
+    body: {
+        _id: Joi.string().required()
+    },
+  };
   const options = {
-    wantResponse: true,
+    wantResponse: false,
   };
 
   router.use(middleware.verifyToken);
-  router.get('/api/list', videoController.findAll);//Aca vamos a listar
-  router.post('/api/add', middleware.verifyAdd, videoController.add);
-  router.delete('/api/delete/:_id',videoController.delete);//Aca vamos a borrar
-  router.put('/api/update/',videoController.update)
+  router.get('/api/list', videoController.findAll);
+  router.post('/api/add', expressJoiMiddleware(videoAddSchema, options), middleware.verifyAdd, videoController.add);
+  router.delete('/api/delete/', expressJoiMiddleware(videoDeleteSchema, options),videoController.delete);
+  router.put('/api/update/', expressJoiMiddleware(videoUpdateSchema, options), videoController.update)
 
   module.exports = router;

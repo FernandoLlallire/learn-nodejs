@@ -7,6 +7,7 @@ const video = require('./routes/videos');
 const cookieParser = require('cookie-parser');
 
 const app = express();
+
 app.use('/public', express.static(__dirname+'/public'));
 app.use(bodyParser.json());//Para poder obtener los datos del body
 app.use(bodyParser.urlencoded());//para el parseo

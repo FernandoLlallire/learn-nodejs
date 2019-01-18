@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
-
+const middleware = require('../middleware/Midleware');
 const expressJoiMiddleware = require('express-joi-middleware');
 const Joi = require('joi');
 const userController = require('../controllers/user.controller');
@@ -32,28 +32,10 @@ const userCreateSchema = {
   const options = {
     wantResponse: true,
   };
-
+  
   router.get('/', userController.index);
   router.post('/createUser', expressJoiMiddleware(userCreateSchema, options), userController.createUser);
   router.post('/logIn', expressJoiMiddleware(userLogInSchema, options), userController.logIn);
-  router.get('/list',(req,res) => res.sendFile(path.join(__dirname,'/../views/users/videoList.html')));
-/*
-  router.post('/', expressJoiMiddleware(userCreateSchema, options), userController.create);
-
-  router.get('/list', userController.findAll);
-
-  router.get('/:userId', userController.findOne);
-
-  router.put('/:userId', expressJoiMiddleware(userUpdateSchema, options), userController.update);
-
-  router.delete('/:userId', userController.delete);
-  /*
-  router.post('/createUser', expressJoiMiddleware(userCreateSchema, options), userController.create);
-  router.post('/logIn',expressJoiMiddleware(userLogInSchema, options), userController.logIn);
-  router.get('/api',userController.findUserName);
-  */
-
- //router.post('/login', midleware.login);
- //router.get('/dashboard',midleware.verifyToken,midleware.dashboard);
+  router.get('/list',middleware.verifyToken,(req,res) => res.sendFile(path.join(__dirname,'/../views/users/videoList.html')));
 
   module.exports = router;

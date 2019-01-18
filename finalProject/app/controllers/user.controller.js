@@ -33,10 +33,8 @@ exports.createUser = (req,res) => {
     });
     newUser.save()
     .then(data => {
-      //res.send(data);
       const objJwt = jwt.sign({_id:data._id,userName:data.userName},key);
       res.cookie("logInUser",objJwt, { maxAge: 900000, httpOnly: false });
-      //res.send({token : objJwt});
       res.redirect('/list');
     })
     .catch(err => {
@@ -59,7 +57,6 @@ exports.logIn = (req,res) => {
       if(result){
         const objJwt = jwt.sign({_id:user._id,userName:user.userName},key);
         res.cookie("logInUser",objJwt, { maxAge: 900000, httpOnly: false });
-        //res.send({token : objJwt});
         res.redirect('/list');
       }
       else{
@@ -82,65 +79,3 @@ exports.logIn = (req,res) => {
 exports.test = (req,res) => {
   res.sendFile(path.join(__dirname,'/../views/users/listVideos.html'));
 };
-/*
-exports.findUserName = (req,res) =>{
-  User.findOne({userName:req.body.userName}).exec()
-  .then(user => {
-    if(!user){
-      res.status(400).send({message:'userName not register'});
-    } else {
-      res.status(200).send(user);
-    }
-  }).catch(err => {
-    console.log(err);
-      res.status(500).send({
-      message: "Error retrieving userName " + req.params.userName
-    });
-  })
-}
-
-exports.create = (req, res) => {
-  fetch(`http://127.0.0.1:3000/api`,{body:{userName:req.body.userName}})
-    .then(response => {
-      switch(response.status){
-        case 200:
-          res.status(409).send("usuario ya registrado");
-        break;
-        case 400:
-          bcrypt.hash(req.body.password, 5, (err, hash) => {
-            const newUser = new User({
-              name: req.body.name,
-              userName: req.body.userName,
-              password: hash,
-              videos: videoDefault
-            });
-            newUser.save()
-            .then(data => res.send(data))
-            .catch(err => {
-              console.log(err);
-                res.status(500).send({
-                    message: err.message || "Some error occurred while creating the User."
-                });
-            });
-          });
-        break;
-        default:
-      }
-    })
-};
-exports.logIn = (req, res) => {
-  fetch(`http://127.0.0.1:3000/${req.body.userName}`)
-    .then(response => {
-      switch(response.status){
-        case 200:
-          return response.json();
-        break;
-        case 400:
-          return Promise.resolve();
-        break;
-        default:
-      }
-    })
-    .then(x=>{if(x.userName){console.log(x);res.send(x)}else{console.log("nada");res.send("nada")}})
-};
-*/

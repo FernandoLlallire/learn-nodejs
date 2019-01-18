@@ -13,13 +13,9 @@ exports.verifyToken = (req,res,next) => {
             next();
           }
       })
+    }else{
+      res.redirect('/');
     }
-    /*if(!token) res.status(403).redirect('/');
-    jwt.verify(token, key, (err,deco)=>{
-        if(err) res.status(403).redirect('/');
-        req.token=deco;
-        next();
-    });*/
 }
 exports.verifyAdd = (req,res,next) => {
   //res.redirect('/list');
