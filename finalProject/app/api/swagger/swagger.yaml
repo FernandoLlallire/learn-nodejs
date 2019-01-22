@@ -1,0 +1,80 @@
+#swagger based on https://apihandyman.io/writing-openapi-swagger-specification-tutorial-part-2-the-basics/
+#this is the Open API version which we use
+swagger: "2.0"
+#Info about our api, this version es the api's version (not the specification version or the file version)
+info:
+  version: 1.0.0
+  title: Api CRUD for user's videos
+  description: A simple Api which only can be access by token
+  contact:
+    name: Fernando Llallire
+    email: fernandorllallire@gmail.com
+#info of the URL which people will use to call the web api
+schemes:
+  - https
+  - http
+host: localhost:3030
+basePath: /video/api
+#list -> videocontroller.findall
+#add -> videocontroller.add
+#delete -> videocontroller.delete
+#update -> videocontroller.update
+paths:
+  /list:
+    get:
+      #summary: list videos
+      description: list all the videos of the user logged
+      parameters:
+       - in: cookie
+         name: logInUser
+         description: token with "_id" and "description" if the user encoded by JWT
+         schema:
+          type: string
+      responses:
+        200:
+          description: show all url and description of each video 
+          schema: 
+            type: object
+            items:
+              required:
+                - url
+                - description
+              properties:
+                url:
+                  type: string
+                description:
+                  type: string
+        500:
+          description: An unepected error ocured
+          schema:
+            type: object
+            items:
+              required:
+                - message
+              properties:
+                message:
+                  type: string
+  /add:
+   post:
+    description: add url and description of a new video to user
+    responses:
+      200:
+        description: video added
+        schema:
+          type: object
+          items:
+            required:
+              - message
+            properties:
+              message:
+                type: string
+      500:
+        description: An unepected error ocured
+        schema:
+          type: object
+          items:
+            required:
+              - message
+            properties:
+              message:
+                type: string
