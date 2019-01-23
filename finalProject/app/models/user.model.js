@@ -5,18 +5,20 @@ const findUserByToken = req => User.findOne({_id:req.token._id,userName:req.toke
 
 exports.findUserByToken = req => findUserByToken(req);
 
-exports.elementDeletePromise = req => User.findOneAndUpdate({ 
-    _id:req.token._id,
-    userName:req.token.userName},
-    {'$pull':{'videos':{ _id:req.body._id }}
+exports.elementDeletePromise = req => 
+    User.findOneAndUpdate({ 
+        _id:req.token._id,
+        userName:req.token.userName},
+        {'$pull':{'videos':{ _id:req.body._id }}
 })
+.then(data => data.videos)
 
 exports.addVideoPromise = (req,res) => {
     findUserByToken(req)
     .then(user =>{
        user.videos.push({url:req.body.url,description:req.body.description});
        user.save()
-       .then(data => res.status(200).send({message: "Video agregado", data}))
+       .then(data => res.status(200).send({message: "Video agregado", data:data.videos}))
        .catch(err => {
            res.status(500).send({ message: err.message || "Error al agregar videos"})
        });
@@ -34,6 +36,7 @@ exports.findElementoToUpdate = req =>  User.findOneAndUpdate({
       'videos.$.description':req.body.newDescription
       }
 })
+.then(data => data.videos)
 
 exports.saveNewUSer = (req,hash,videoDefault) => {
     const newUser = new User({

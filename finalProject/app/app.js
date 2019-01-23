@@ -19,11 +19,9 @@ const options = {
   explorer : true
 };
 
-
-
 const app = express();
 
-app.use(bodyParser.json());
+app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use('/video', video);
