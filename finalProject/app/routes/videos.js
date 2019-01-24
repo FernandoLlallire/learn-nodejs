@@ -30,10 +30,10 @@ const videoAddSchema = {
     wantResponse: true,
   };
 
-  router.use(middleware.verifyToken);
+  router.use(middleware.verifyTokenHeader);
   router.get('/api/list', videoController.findAll);
-  router.post('/api/add', expressJoiMiddleware(videoAddSchema, options), middleware.verifyRepeat, videoController.add);
+  router.put('/api/add', expressJoiMiddleware(videoAddSchema, options), middleware.verifyRepeat, videoController.add);
   router.delete('/api/delete/', expressJoiMiddleware(videoDeleteSchema, options),videoController.delete);
-  router.put('/api/update/', expressJoiMiddleware(videoUpdateSchema, options), middleware.verifyRepeatNewVideo, videoController.update)
+  router.patch('/api/update/', expressJoiMiddleware(videoUpdateSchema, options), middleware.verifyRepeatNewVideo, videoController.update)
 
   module.exports = router;

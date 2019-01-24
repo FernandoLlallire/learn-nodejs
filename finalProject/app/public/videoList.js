@@ -1,5 +1,11 @@
 window.onload = function (){
-    fetch('video/api/list')
+    //console.log(document.cookie.split(';').forEach(e=>console.log(e.split('=')[0].trim())))
+    fetch('video/api/list',{
+    headers: {
+        method:'get',
+        'Authorization': obtainBearerValue(),
+        'Content-Type': 'application/json'
+    }})
     .then(rawResponse => rawResponse.json())
     .then(response => {
         const ul = document.getElementById('list');
@@ -51,7 +57,10 @@ window.onload = function (){
             buttonDelete.addEventListener('click', () => {
                 fetch('video/api/delete',{
                     method:'delete',
-                    headers:{'Content-Type': 'application/json'},
+                    headers: {
+                        'Authorization': obtainBearerValue(),
+                        'Content-Type': 'application/json'
+                    },
                     body:JSON.stringify({_id:element._id})
                 })
                 .then(res=>res.json())
@@ -59,8 +68,11 @@ window.onload = function (){
             });
             buttonUpdate.addEventListener('click', (event) => {
                 fetch('video/api/update',{
-                    method:'put',
-                    headers:{'Content-Type': 'application/json'},
+                    method:'patch',
+                    headers: {
+                        'Authorization': obtainBearerValue(),
+                        'Content-Type': 'application/json'
+                        },
                     body: JSON.stringify({//event.target.parentElement.querySelector('.newDescription').value
                         newUrl: event.target.parentElement.querySelector('.newUrl').value,
                         newDescription: event.target.parentElement.querySelector('.newDescription').value,
@@ -76,12 +88,27 @@ window.onload = function (){
     document.getElementById('addVideo').addEventListener('click', (e) => {
         e.preventDefault();
         fetch('video/api/add',{
-          method:'post',
-          headers: {'Content-Type': 'application/json'},
+            method:'put',
+            headers: {
+            'Authorization': obtainBearerValue(),
+            'Content-Type': 'application/json'
+            },
           body: JSON.stringify({url:document.getElementById("urlVideo").value,description:document.getElementById("descriptionVideo").value})
-        })//.catch(err=>res.send(err))
+        })
         .then(response=>response.json())
         .then(reponse=> window.location='/list')
 
     });
+}
+const obtainBearerValue = () => {
+    const cookieNode = document.cookie.split(';');
+    let bearerValue;
+    //console.log(cookieNode)
+    cookieNode.forEach(element => {
+        //console.log(element.split('=')[0].trim()==='logInUser')
+        if(element.split('=')[0].trim()==='logInUser'){
+            bearerValue = 'Bearer ' + element.split('=')[1];
+        }
+    })
+    return bearerValue;
 }

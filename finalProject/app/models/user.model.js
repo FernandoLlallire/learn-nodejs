@@ -1,16 +1,18 @@
 const User = require('../models/User');
 const Video = require('../models/Video');
 
-const findUserByToken = req => User.findOne({_id:req.token._id,userName:req.token.userName});
+const findUserByToken = req => User.findOne({_id:req.token._id,userName:req.token.userName,password:req.token.password});
 
 exports.findUserByToken = req => findUserByToken(req);
 
 exports.elementDeletePromise = req => 
     User.findOneAndUpdate({ 
         _id:req.token._id,
-        userName:req.token.userName},
-        {'$pull':{'videos':{ _id:req.body._id }}
-})
+        userName:req.token.userName,
+        password:req.token.password},
+        {'$pull':{'videos':{ _id:req.body._id }}},
+        {new:true}
+        )
 .then(data => data.videos)
 
 exports.addVideoPromise = (req,res) => {
@@ -26,16 +28,18 @@ exports.addVideoPromise = (req,res) => {
     )
 }
 
-exports.findElementoToUpdate = req =>  User.findOneAndUpdate({
-    _id:req.token._id,userName:req.token.userName,
-    "videos.url":req.body.url,
-    "videos.description":req.body.description
-  },
-  {'$set':{
-      'videos.$.url':req.body.newUrl,
-      'videos.$.description':req.body.newDescription
-      }
-})
+exports.findElementoToUpdate = req =>  
+    User.findOneAndUpdate({
+        _id:req.token._id,userName:req.token.userName,password:req.token.password,
+        "videos.url":req.body.url,
+        "videos.description":req.body.description
+    },
+    {'$set':{
+        'videos.$.url':req.body.newUrl,
+        'videos.$.description':req.body.newDescription
+        }
+    },
+    {new:true})
 .then(data => data.videos)
 
 exports.saveNewUSer = (req,hash,videoDefault) => {

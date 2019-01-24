@@ -46,3 +46,16 @@ exports.verifyRepeatNewVideo = (req,res,next) => {
     }
   })
 }
+exports.verifyTokenHeader = (req,res,next) => {
+  const token = req.headers.authorization.split(' ')[0]==='Bearer' ? req.headers.authorization.split(' ')[1] : '';
+    if(token){
+      jwt.verify(token, key, (err,deco)=>{
+          if(!err){
+            req.token=deco;
+            next(); 
+          }
+      })
+    }else{
+      res.redirect('/');
+    }
+}

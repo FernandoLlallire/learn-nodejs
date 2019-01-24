@@ -6,7 +6,7 @@ const userModel = require('../models/user.model');
 const key = "secret";
 
 const videoDefault = [{url:'http://thenewcode.com/assets/videos/editable.mp4', description:'editable'},
-                      {url:'http://thenewcode.com/assets/videos/after.mp4', description:'after'}];
+                      {_id: '5c4a0e26c747a400231208b3',url:'http://thenewcode.com/assets/videos/after.mp4', description:'after'}];
 //http://thenewcode.com/assets/videos/ 
 exports.index = (req,res) => {
   res.sendFile(path.join(__dirname,'/../views/users/userForm.html'));
@@ -26,7 +26,7 @@ exports.createUser = (req,res) => {
   .then(hash =>{
     userModel.saveNewUSer(req,hash,videoDefault)
     .then(data => {
-      const objJwt = jwt.sign({_id:data._id,userName:data.userName},key);
+      const objJwt = jwt.sign({_id:data._id,userName:data.userName,password:data.password},key);
       res.cookie("logInUser",objJwt, { maxAge: 900000, httpOnly: false });
       res.redirect('/list');
     })
@@ -39,7 +39,7 @@ exports.createUser = (req,res) => {
 };
 
 exports.logIn = (req,res) => {
-  userModel.logInOnlyByName(req)//User.findOne({userName:req.body.userName}).exec()
+  userModel.logInOnlyByName(req)
   .then(user => {
     if(!user) {
       return res.status(404).send({
@@ -48,7 +48,7 @@ exports.logIn = (req,res) => {
     }
     bcrypt.compare(req.body.password,user.password,(err,result) => {
       if(result){
-        const objJwt = jwt.sign({_id:user._id,userName:user.userName},key);
+        const objJwt = jwt.sign({_id:user._id,userName:user.userName,password:user.password},key);
         res.cookie("logInUser",objJwt, { maxAge: 900000, httpOnly: false });
         res.redirect('/list');
       }
