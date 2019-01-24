@@ -62,7 +62,10 @@ paths:
         description: Message of the status and an array with all the new videos
         schema:
           $ref: "#/definitions/TypeResponseVideo" 
-              
+      400:
+        description: error make by the user
+        schema:
+         $ref: "#/definitions/Error" 
       500:
         description: An unexpected error ocured
         schema:
@@ -102,6 +105,14 @@ paths:
             description:  Message of the status and an array with all the new videos
             schema:
              $ref: "#/definitions/TypeResponseVideo"
+          404:
+            description: error make by the user
+            schema:
+              $ref: "#/definitions/Error"
+          409:
+            description: error make by the user
+            schema:
+              $ref: "#/definitions/Error"
           500:
             description: An unepected error ocured
             schema:

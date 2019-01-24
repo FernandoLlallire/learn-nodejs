@@ -28,6 +28,9 @@ exports.verifyRepeat = (req,res,next) => {
     if (!repeated){
       next();
     }
+    else{
+      res.status(409).send({message: "La url ya existe para este usuario"})
+    }
   })
 }
 
@@ -35,14 +38,23 @@ exports.verifyRepeatNewVideo = (req,res,next) => {
   userModel.findUserByToken(req)
   .then(user => {
     let repeated = false;
+    let exist = false;
     user.videos.forEach(element => {
         if(req.body.newUrl == element.url){
           repeated=true;
         }
+        if(req.body.url == element.url){
+          exist = true;
+        }
     })
     
-    if (!repeated){
+    if (!repeated && exist){
       next();
+    }else{
+      if (exist)
+        res.status(409).send({message: "La nueva url ya existe para este usuario"})
+      else
+        res.status(404).send({message: "La url no existe para este usuario"})
     }
   })
 }

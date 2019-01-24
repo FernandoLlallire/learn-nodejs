@@ -56,7 +56,7 @@ window.onload = function (){
             /*Eventos*/
             buttonDelete.addEventListener('click', () => {
                 fetch('video/api/delete',{
-                    method:'delete',
+                    method:'DELETE',
                     headers: {
                         'Authorization': obtainBearerValue(),
                         'Content-Type': 'application/json'
@@ -67,8 +67,9 @@ window.onload = function (){
                 .then(res=> window.location='/list')
             });
             buttonUpdate.addEventListener('click', (event) => {
+                
                 fetch('video/api/update',{
-                    method:'patch',
+                    method:'PATCH',
                     headers: {
                         'Authorization': obtainBearerValue(),
                         'Content-Type': 'application/json'
@@ -88,7 +89,7 @@ window.onload = function (){
     document.getElementById('addVideo').addEventListener('click', (e) => {
         e.preventDefault();
         fetch('video/api/add',{
-            method:'put',
+            method:'PUT',
             headers: {
             'Authorization': obtainBearerValue(),
             'Content-Type': 'application/json'
@@ -103,9 +104,7 @@ window.onload = function (){
 const obtainBearerValue = () => {
     const cookieNode = document.cookie.split(';');
     let bearerValue;
-    //console.log(cookieNode)
     cookieNode.forEach(element => {
-        //console.log(element.split('=')[0].trim()==='logInUser')
         if(element.split('=')[0].trim()==='logInUser'){
             bearerValue = 'Bearer ' + element.split('=')[1];
         }

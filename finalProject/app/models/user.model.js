@@ -5,15 +5,24 @@ const findUserByToken = req => User.findOne({_id:req.token._id,userName:req.toke
 
 exports.findUserByToken = req => findUserByToken(req);
 
-exports.elementDeletePromise = req => 
-    User.findOneAndUpdate({ 
+exports.elementDeletePromise = (req,res) => 
+    User.findOne({
+        _id:req.token._id,
+        userName:req.token.userName,
+        password:req.token.password,"videos._id":req.body._id})
+    .then(result => {if (!result) returnres.status(404).send({message: "Url de video no ecistente para el usuario"});
+        result.videos.id(req.body._id).remove();
+        result.save();
+    })
+        //x=>{if(x){console.log(x)} else console.log("No existe")})
+/*     User.findOneAndUpdate({ 
         _id:req.token._id,
         userName:req.token.userName,
         password:req.token.password},
         {'$pull':{'videos':{ _id:req.body._id }}},
         {new:true}
         )
-.then(data => data.videos)
+.then(data => data.videos) */
 
 exports.addVideoPromise = (req,res) => {
     findUserByToken(req)

@@ -15,7 +15,7 @@ https://coderwall.com/p/6v5rcw/querying-sub-documents-and-sub-sub-documents-in-m
 
 //https://stackoverflow.com/questions/44233791/fetch-can-you-pass-parameters-to-the-server
 exports.delete = (req, res) => {
-    userModel.elementDeletePromise(req)
+    userModel.elementDeletePromise(req,res)
     .then(data => res.status(200).send({message: "Video eliminado", data}))
     .catch(err => {
         res.status(500).send({ message: err.message || "Error al borrar videos"})
