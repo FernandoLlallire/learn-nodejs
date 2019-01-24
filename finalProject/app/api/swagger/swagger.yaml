@@ -16,38 +16,21 @@ schemes:
 host: localhost:3030
 basePath: /video/api
 securityDefinitions:
-  myCookie:
+  Bearer:
     type: apiKey
-    name: Cookie
+    name: Authorization
     in: header
-#list -> videocontroller.findall
-#add -> videocontroller.add
-#delete -> videocontroller.delete
-#update -> videocontroller.update
 paths:
   /list:
     get:
       security:
-        - myCookie: []
+        - Bearer: []
       description: list all the videos of the user logged
       responses:
         200:
-          description: show all url and description of each video 
-          schema: 
-            type: array
-            items:
-              type: object
-              required:
-                - url
-                - description
-              properties:
-                url:
-                  type: string
-                  description: Url del video
-                description:
-                  type: string
-                  description: descripcion del video
-
+          description: Show an array with all the videos of the user
+          schema:
+            $ref: "#/definitions/VideoResponse" 
         500:
           description: An unexpected error ocured
           schema:
@@ -55,7 +38,7 @@ paths:
   /add:
    put:
     security:
-      - myCookie: []
+      - Bearer: []
     description: add url and description of a new video to user
     parameters:
       - name: New video parameters
@@ -63,39 +46,13 @@ paths:
         required: true
         description: url and description of the new video
         schema:
-          required:
-            - url
-            - description
-          properties:
-            url:
-              type: string
-            description:
-              type: string
+          $ref: "#/definitions/BodyVideoParameters" 
     responses:
       200:
-        description: video added
+        description: Message of the status and an array with all the new videos
         schema:
-          type: object
-          required:
-            - message
-            - data
-          properties:
-            message:
-              type: string
-              description: mensaje de estado del mensaje
-            data:
-              type: array
-              items:
-                required:
-                  - url
-                  - description
-                properties:
-                  url:
-                    type: string
-                    description: url of the new video
-                  description:
-                    type: string
-                    description: description of the new video
+          $ref: "#/definitions/TypeResponseVideo" 
+              
       500:
         description: An unexpected error ocured
         schema:
@@ -104,7 +61,7 @@ paths:
   /update:
       patch:
         security:
-          - myCookie: []
+          - Bearer: []
         description: add url and description of a new video to user
         parameters:
           - name: video parameters to update
@@ -113,11 +70,14 @@ paths:
             description: url and description of the video and the new parameters
             schema:
               required:
+                - _id
                 - url
                 - description
                 - newUrl
                 - newDescription
               properties:
+                _id:
+                  type: string
                 url:
                   type: string
                 description:
@@ -128,28 +88,9 @@ paths:
                   type: string
         responses:
           200:
-            description: video updated
+            description:  Message of the status and an array with all the new videos
             schema:
-              type: object
-              required:
-                - message
-                - data
-              properties:
-                message:
-                  type: string
-                data:
-                  type: array
-                  items:
-                    required:
-                      - url
-                      - description
-                    properties:
-                      url:
-                        type: string
-                        description: url of the old video
-                      description:
-                        type: string
-                        description: description of the old video
+             $ref: "#/definitions/TypeResponseVideo"
           500:
             description: An unepected error ocured
             schema:
@@ -158,7 +99,7 @@ paths:
   /delete:
     delete:
       security:
-        - myCookie: []
+        - Bearer: []
       description: add url and description of the video to delete
       parameters:
         - name: Delete Video Parameters
@@ -166,41 +107,30 @@ paths:
           in: body
           description: id of the elemento to delete
           schema:
-            required:
-              - id
-            properties:
-              id:
-                type: string
+            $ref: "#/definitions/BodyVideoParameters" 
       responses:
         200:
-          description: video deleted
+          description:  Message of the status and an array with all the remaining videos
           schema:
-            type: object
-            required:
-              - message
-              - data
-            properties:
-              message:
-                type: string
-              data:
-                type: array
-                items:
-                  required:
-                    - url
-                    - description
-                  properties:
-                      url:
-                        type: string
-                        description: url of the delected video
-                      description:
-                        type: string
-                        description: description of the delected video
+            $ref: "#/definitions/TypeResponseVideo"
         500:
           description: An unepected error ocured
           schema:
             $ref: "#/definitions/Error" 
             
 definitions:
+  BodyVideoParameters:
+    required:
+      - _id
+      - url
+      - description
+    properties:
+      _id:
+        type: string
+      url:
+        type: string
+      description:
+        type: string
   Error:
     type: object
     required:
@@ -208,3 +138,30 @@ definitions:
     properties:
       message:
         type: string
+  TypeResponseVideo:
+    type: object
+    required:
+      - message
+      - data
+    properties:
+      message:
+        type: string
+        description: status of the action
+      data:
+        $ref: "#/definitions/VideoResponse"
+  VideoResponse:
+    type: array
+    items:
+      type: object
+      required:
+        - _id
+        - url
+        - description
+      properties:
+        _id:
+          type: string
+          description: Id of the subdocument in mongoose
+        url:
+          type: string
+        description:
+          type: string
