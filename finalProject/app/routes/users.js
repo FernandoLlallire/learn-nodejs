@@ -40,5 +40,6 @@ const userCreateSchema = {
   router.get('/list',middleware.verifyToken, userController.videoList);
   router.put('/apis/createUser', expressJoiMiddleware(userCreateSchema, options), userController.createUserApi);
   router.post('/apis/logIn', expressJoiMiddleware(userLogInSchema, options), userController.logInApi);
-  router.delete('/apis/delet',userController.deletApi)
+  router.delete('/apis/delet', userController.deletApi)
+  router.patch('/apis/update', userController.updateApi)
   module.exports = router;

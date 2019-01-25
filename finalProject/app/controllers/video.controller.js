@@ -36,7 +36,7 @@ exports.add = (req,res) => {
 };
 //https://stackoverflow.com/questions/26156687/mongoose-find-update-subdocument
 exports.update = (req,res) => {
- userModel.findElementoToUpdate(req)
+ userModel.updateUser(req)
   .then(data => res.status(200).send({message: "Video editado", data:data.videos}))
   .catch(err => {
       res.status(500).send({ message: err.message || "Error al Actualizar videos"})

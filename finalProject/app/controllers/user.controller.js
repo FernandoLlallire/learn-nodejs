@@ -86,7 +86,7 @@ exports.createUserApi = (req,res) => {
     userModel.saveNewUSer(req,hash,videoDefault)
     .then(user => {
       console.log(user);
-      return res.status(200).send({jwt:jwt.sign({user},key)})
+      return res.status(200).send({message:"Usuario Creado",jwt:jwt.sign({user},key)})
       //res.cookie("logInUser",objJwt, { maxAge: 900000, httpOnly: false });
       //res.redirect('/list');
     })
@@ -108,7 +108,7 @@ exports.logInApi = (req,res) => {
     .then(result => {
       if(result){
         console.log(user);
-        return res.status(200).send({jwt:jwt.sign({user},key)})
+        return res.status(200).send({message:"Usuario logeado",jwt:jwt.sign({user},key)})
       }else{
         return res.status(401).send({message: "Contraseña incorrecta"});
       }
@@ -128,27 +128,14 @@ exports.deletApi = (req, res) => {
   })
   .catch(err => res.status(500).send({message: "Could not delete User with id " + req.body._id}))
 }
-/*
+
 exports.updateApi = (req, res) => {
-  User.findByIdAndUpdate(req.params.userId, {
-    name: req.body.name,
-    username: req.body.username
-  }, { new: true })
+  userModel.updateUser(req)
   .then(user => {
+    console.log(user);
     if(!user) {
-      return res.status(404).send({
-        message: "User not found with id " + req.params.userId
-      });
+      return res.status(404).send({ message: "Usuario inexistente" });
     }
-    res.send(user);
-  }).catch(err => {
-    if(err.kind === 'ObjectId') {
-      return res.status(404).send({
-        message: "User not found with id " + req.params.userId
-      });
-    }
-    return res.status(500).send({
-      message: "Error updating User with id " + req.params.userId
-    });
-  });
-};*/
+    res.status(200).send({message:"Usuario actualizado",jwt:jwt.sign({user},key)});
+  }).catch(err => res.status(500).send({message: "Error updating User with id " + req.params.userId}))
+}

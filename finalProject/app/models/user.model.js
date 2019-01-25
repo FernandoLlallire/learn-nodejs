@@ -15,3 +15,9 @@ exports.saveNewUSer = (req,hash,videoDefault) => {
 exports.logInOnlyByName = (req) => User.findOne({userName:req.body.userName})
 
 exports.deleteByID = req => User.findByIdAndRemove(req.body._id)
+
+exports.updateUser = req => User.findByIdAndUpdate(
+    req.body._id, {
+    name: req.body.name,
+    userName: req.body.userName
+}, { new: true })
