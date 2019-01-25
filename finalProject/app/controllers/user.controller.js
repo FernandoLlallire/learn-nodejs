@@ -7,7 +7,7 @@ const key = "secret";
 
 const videoDefault = [{url:'http://thenewcode.com/assets/videos/editable.mp4', description:'editable'},
                       {_id: '5c4a0e26c747a400231208b3',url:'http://thenewcode.com/assets/videos/after.mp4', description:'after'}];
-//http://thenewcode.com/assets/videos/ 
+//http://thenewcode.com/assets/videos/
 exports.index = (req,res) => {
   res.sendFile(path.join(__dirname,'/../views/users/userForm.html'));
 };
@@ -25,8 +25,8 @@ exports.createUser = (req,res) => {
   .catch(err => res.send(err))
   .then(hash =>{
     userModel.saveNewUSer(req,hash,videoDefault)
-    .then(data => {
-      const objJwt = jwt.sign({_id:data._id,userName:data.userName,password:data.password},key);
+    .then(user => {
+      const objJwt = jwt.sign({_id:user._id,userName:user.userName,password:user.password},key);
       res.cookie("logInUser",objJwt, { maxAge: 900000, httpOnly: false });
       res.redirect('/list');
     })
@@ -70,3 +70,85 @@ exports.logIn = (req,res) => {
 };
 
 exports.videoList = (req,res) => res.sendFile(path.join(__dirname,'/../views/users/videoList.html'));
+
+exports.createUserApi = (req,res) => {
+  return new Promise((resolve,reject) => {
+    bcrypt.hash(req.body.password, 5, (err,hash) =>{
+      if (err) {
+        reject(err);
+      } else {
+        resolve(hash);
+      }
+    })
+  })
+  .catch(err => res.status(500).send({message: err.message || "Error al hashear contraseña"}))
+  .then(hash =>{
+    userModel.saveNewUSer(req,hash,videoDefault)
+    .then(user => {
+      console.log(user);
+      return res.status(200).send({jwt:jwt.sign({user},key)})
+      //res.cookie("logInUser",objJwt, { maxAge: 900000, httpOnly: false });
+      //res.redirect('/list');
+    })
+    .catch(err => {
+      res.status(500).send({
+          message: err.message || "Error al Guardar al usuario"
+      });
+    });
+  })
+};
+
+exports.logInApi = (req,res) => {
+  userModel.logInOnlyByName(req)
+  .then(user => {
+    if(!user) {
+      return res.status(404).send({ message: "Usuario " + req.body.userName + " inexistente" });
+    }
+    bcrypt.compare(req.body.password,user.password)
+    .then(result => {
+      if(result){
+        console.log(user);
+        return res.status(200).send({jwt:jwt.sign({user},key)})
+      }else{
+        return res.status(401).send({message: "Contraseña incorrecta"});
+      }
+    })
+  })
+  .catch(err => res.status(500).send({message: "Error al loguear al usuario" + req.body.userName}))
+
+}
+
+exports.deletApi = (req, res) => {
+  userModel.deleteByID(req)
+  .then(user => {
+    if(!user) {
+      return res.status(404).send({ message: "Usuario inexistente" });
+    }
+    return res.send({message: "Usuario Borrado"});
+  })
+  .catch(err => res.status(500).send({message: "Could not delete User with id " + req.body._id}))
+}
+/*
+exports.updateApi = (req, res) => {
+  User.findByIdAndUpdate(req.params.userId, {
+    name: req.body.name,
+    username: req.body.username
+  }, { new: true })
+  .then(user => {
+    if(!user) {
+      return res.status(404).send({
+        message: "User not found with id " + req.params.userId
+      });
+    }
+    res.send(user);
+  }).catch(err => {
+    if(err.kind === 'ObjectId') {
+      return res.status(404).send({
+        message: "User not found with id " + req.params.userId
+      });
+    }
+    return res.status(500).send({
+      message: "Error updating User with id " + req.params.userId
+    });
+  });
+};*/
