@@ -28,7 +28,7 @@ exports.createUserApi = (req,res) => {
   .then(hash =>{
     userModel.saveNewUSer(req,hash,videoDefault)
     .then(user => {
-      console.log(user);
+      //console.log(user);
       return res.status(200).send({message:"Usuario Creado",jwt:jwt.sign({user},key)})
     })
     .catch(err => {
@@ -66,7 +66,7 @@ exports.deleteApi = (req, res) => {
     if(!user) {
       return res.status(404).send({ message: "Usuario inexistente" });
     }
-    return res.send({message: "Usuario Borrado"});
+    return res.status(200).send({message: "Usuario Borrado", jwt:""});
   })
   .catch(err => res.status(500).send({message: "Could not delete User with id " + req.body._id}))
 }
