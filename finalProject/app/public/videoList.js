@@ -1,6 +1,6 @@
 window.onload = function (){
     //console.log(document.cookie.split(';').forEach(e=>console.log(e.split('=')[0].trim())))
-    fetch('video/api/list',{
+    fetch('api/list',{
     headers: {
         method:'get',
         'Authorization': obtainBearerValue(),
@@ -55,7 +55,7 @@ window.onload = function (){
             ul.appendChild(li);
             /*Eventos*/
             buttonDelete.addEventListener('click', () => {
-                fetch('video/api/delete',{
+                fetch('api/delete',{
                     method:'DELETE',
                     headers: {
                         'Authorization': obtainBearerValue(),
@@ -67,8 +67,8 @@ window.onload = function (){
                 .then(res=> window.location='/list')
             });
             buttonUpdate.addEventListener('click', (event) => {
-                
-                fetch('video/api/update',{
+
+                fetch('api/update',{
                     method:'PATCH',
                     headers: {
                         'Authorization': obtainBearerValue(),
@@ -88,7 +88,7 @@ window.onload = function (){
     })
     document.getElementById('addVideo').addEventListener('click', (e) => {
         e.preventDefault();
-        fetch('video/api/add',{
+        fetch('api/add',{
             method:'PUT',
             headers: {
             'Authorization': obtainBearerValue(),
@@ -97,7 +97,7 @@ window.onload = function (){
           body: JSON.stringify({url:document.getElementById("urlVideo").value,description:document.getElementById("descriptionVideo").value})
         })
         .then(response=>response.json())
-        .then(reponse=> window.location='/list')
+        .then(reponses=> window.location='/list')
 
     });
 }

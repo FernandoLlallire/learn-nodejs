@@ -7,21 +7,21 @@
 <body>
     <h4>Crear usuario</h4>
     <form action="/createUser" method="post" enctype="application/x-www-form-urlencoded">
-        <input type="text" name="name" id="name" placeholder="Ingrese nombre">
+        <input type="text" name="name" id="name" placeholder="Ingrese nombre" required>
         <br>
-        <input type="email" name="userName" id="userName" placeholder="Ingrese su mail">
+        <input type="email" name="userName" id="userName" placeholder="Ingrese su mail" required>
         <br>
-        <input type="password" name="password" id="password" placeholder="password">
+        <input type="password" name="password" id="password" placeholder="password" required>
         <br>
-        <input type="password" name="confirmPassword" id="confirmPassword" placeholder="confirm password">
+        <input type="password" name="confirmPassword" id="confirmPassword" placeholder="confirm password" required>
         <br>
         <input type="submit" value="registrar">
     </form>
     <h4>LogIn</h4>
     <form action="/logIn" method="post" enctype="application/x-www-form-urlencoded">
-        <input type="email" name="userName" id="userName" placeholder="Ingrese su mail">
+        <input type="email" name="userName" id="userName" placeholder="Ingrese su mail" required>
         <br>
-        <input type="password" name="password" id="password" placeholder="password">
+        <input type="password" name="password" id="password" placeholder="password" required>
         <br>
         <input type="submit" value="Logear">
 </body>

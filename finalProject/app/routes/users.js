@@ -9,7 +9,7 @@ const userController = require('../controllers/user.controller');
 const userCreateSchema = {
     body: {
       name: Joi.string().required(),
-      userName: Joi.string().email(),
+      userName: Joi.string().email().required(),
       password: Joi.string().required(),
       confirmPassword: Joi.any().valid(Joi.ref('password')).required().options({ language: { any: { allowOnly: 'passwords and confirmation must be equals.' } } })
     },
@@ -31,8 +31,9 @@ const userCreateSchema = {
 
   const options = {
     wantResponse: true,
+    joiOptions: {abortEarly: false}
   };
-  
+
   router.get('/', userController.index);
   router.post('/createUser', expressJoiMiddleware(userCreateSchema, options), userController.createUser);
   router.post('/logIn', expressJoiMiddleware(userLogInSchema, options), userController.logIn);

@@ -21,10 +21,10 @@ const options = {
 
 const app = express();
 
-app.use(bodyParser.json()); 
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
-app.use('/video', video);
+app.use('/api', video);
 app.use('/', user);
 app.use('/public', express.static(__dirname+'/public'));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options));
