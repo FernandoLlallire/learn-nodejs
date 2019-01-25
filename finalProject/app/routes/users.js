@@ -14,7 +14,11 @@ const userCreateSchema = {
       confirmPassword: Joi.any().valid(Joi.ref('password')).required().options({ language: { any: { allowOnly: 'passwords and confirmation must be equals.' } } })
     },
   };
-
+  const userDeleteSchema = {
+    body: {
+      _id: Joi.string().required()
+    }
+  };
   const userLogInSchema = {
     body: {
       userName: Joi.string().email().required(),
@@ -23,10 +27,11 @@ const userCreateSchema = {
   };
 
   const userUpdateSchema = {
-    body: {
+    body: { 
+      _id: Joi.string().required(),
       name: Joi.string().required(),
       userName: Joi.string().email().required()
-    },
+    }
   };
 
   const options = {
@@ -35,11 +40,10 @@ const userCreateSchema = {
   };
 
   router.get('/', userController.index);
-  router.post('/createUser', expressJoiMiddleware(userCreateSchema, options), userController.createUser);
-  router.post('/logIn', expressJoiMiddleware(userLogInSchema, options), userController.logIn);
-  router.get('/list',middleware.verifyToken, userController.videoList);
-  router.put('/apis/createUser', expressJoiMiddleware(userCreateSchema, options), userController.createUserApi);
-  router.post('/apis/logIn', expressJoiMiddleware(userLogInSchema, options), userController.logInApi);
-  router.delete('/apis/delet', userController.deletApi)
-  router.patch('/apis/update', userController.updateApi)
+  router.get('/list', userController.videoList);
+  router.put('/user/createUser', expressJoiMiddleware(userCreateSchema, options), userController.createUserApi);
+  router.post('/user/logIn', expressJoiMiddleware(userLogInSchema, options), userController.logInApi);
+  router.delete('/user/delete', expressJoiMiddleware(userDeleteSchema, options), userController.deleteApi);
+  router.patch('/user/update', expressJoiMiddleware(userUpdateSchema, options), userController.updateApi);
+  router.get('/user/userData', middleware.verifyTokenHeader, userController.obtainUserData);
   module.exports = router;

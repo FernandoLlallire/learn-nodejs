@@ -1,6 +1,8 @@
 const User = require('../models/User');
-const Video = require('../models/Video');
 
+const findUserByToken = req => User.findOne({_id:req.token._id,userName:req.token.userName,password:req.token.password});
+
+exports.findUserByToken = req => findUserByToken(req);
 
 exports.saveNewUSer = (req,hash,videoDefault) => {
     const newUser = new User({

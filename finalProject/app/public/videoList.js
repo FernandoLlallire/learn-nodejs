@@ -1,6 +1,11 @@
+if(!localStorage.getItem('userToken')||localStorage.getItem('userToken')==='undefined'){
+    if(localStorage.getItem('userToken')==='undefined') localStorage.removeItem('userToken');
+    window.location='/'
+}
+
 window.onload = function (){
-    //console.log(document.cookie.split(';').forEach(e=>console.log(e.split('=')[0].trim())))
-    fetch('api/list',{
+   
+    fetch('video/list',{
     headers: {
         method:'get',
         'Authorization': obtainBearerValue(),
@@ -8,6 +13,16 @@ window.onload = function (){
     }})
     .then(rawResponse => rawResponse.json())
     .then(response => {
+        fetch('user/userData',{
+            headers: {
+            'Authorization': obtainBearerValue(),
+            }
+        })
+        .then(userData => userData.json())
+        .then(userDataJson => {
+            const userDataDiv = document.getElementById('userData');
+            userDataDiv.innerHTML= `<h5>Nombre : ${userDataJson.data.name}<br>Mail : ${userDataJson.data.userName}</h5>`;
+        })
         const ul = document.getElementById('list');
         response.forEach(element => {
             /*Creacion de elementos*/
@@ -55,7 +70,7 @@ window.onload = function (){
             ul.appendChild(li);
             /*Eventos*/
             buttonDelete.addEventListener('click', () => {
-                fetch('api/delete',{
+                fetch('video/delete',{
                     method:'DELETE',
                     headers: {
                         'Authorization': obtainBearerValue(),
@@ -68,7 +83,7 @@ window.onload = function (){
             });
             buttonUpdate.addEventListener('click', (event) => {
 
-                fetch('api/update',{
+                fetch('video/update',{
                     method:'PATCH',
                     headers: {
                         'Authorization': obtainBearerValue(),
@@ -88,7 +103,7 @@ window.onload = function (){
     })
     document.getElementById('addVideo').addEventListener('click', (e) => {
         e.preventDefault();
-        fetch('api/add',{
+        fetch('video/add',{
             method:'PUT',
             headers: {
             'Authorization': obtainBearerValue(),
@@ -100,14 +115,62 @@ window.onload = function (){
         .then(reponses=> window.location='/list')
 
     });
-}
-const obtainBearerValue = () => {
-    const cookieNode = document.cookie.split(';');
-    let bearerValue;
-    cookieNode.forEach(element => {
-        if(element.split('=')[0].trim()==='logInUser'){
-            bearerValue = 'Bearer ' + element.split('=')[1];
-        }
+
+    document.getElementById('deleteUser').addEventListener('click', (e) => {
+        e.preventDefault();
+        fetch('user/userData',{
+            headers: {
+            'Authorization': obtainBearerValue(),
+            }
+        })
+        .then(userData => userData.json())
+        .then(userDataJson => {
+            fetch('user/delete',{
+                method:'DELETE',
+                headers: {
+                'Authorization': obtainBearerValue(),
+                'Content-Type': 'application/json'
+                },
+              body: JSON.stringify({_id:userDataJson.data._id})
+            })
+            .then(response=>response.json())
+            .then(reponses=> {
+                localStorage.removeItem('userToken');
+                window.location='/'
+            })
+         } )
+    });
+
+    document.getElementById('updateUser').addEventListener('click', (e) => {
+        e.preventDefault();
+        fetch('user/userData',{
+            headers: {
+            'Authorization': obtainBearerValue(),
+            }
+        })
+        .then(userData => userData.json())
+        .then(userDataJson => {
+            fetch('user/update',{
+                method:'PATCH',
+                headers: {
+                'Authorization': obtainBearerValue(),
+                'Content-Type': 'application/json'
+                },
+              body: JSON.stringify({_id:userDataJson.data._id,name:document.getElementById("user").value,userName:document.getElementById("userName").value})
+            })
+            .then(response=>response.json())
+            .then(dataNueva => {
+                localStorage.setItem('userToken', dataNueva.jwt);
+                window.location='/list';
+            })
+        })
+        
+
+    });
+    document.getElementById('logOut').addEventListener('click', (e) => {
+        e.preventDefault();
+        localStorage.removeItem('userToken');
+        window.location='/';
     })
-    return bearerValue;
 }
+const obtainBearerValue = () => 'Bearer ' + localStorage.getItem('userToken')

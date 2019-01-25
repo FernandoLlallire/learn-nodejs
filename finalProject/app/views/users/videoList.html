@@ -2,11 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script type="text/javascript" src="/public/videoList.js"></script>
     <title>Video List</title>
 </head>
 
 <body>
-    <h3>Agregar un video</h3>
+    <form action="post">
+        <input type="text" name="user" id="user" placeholder="Ingrese nuevo nombre de usuario" required>   
+        <input type="email" name="userName" id="userName" placeholder="Ingrese Nuevo email" required>
+        <input type="submit" value="Actualizar Usuario" id="updateUser">
+    </form>
+    <br>
+    <form action="post">
+        <input type="submit" value="Borrar usuario" id="deleteUser">
+    </form>
+    
+    <br>
+    <h2>Usuario</h2>
+    <div id="userData"></div>
+    <form action="post">
+            <input type="submit" value="Desloguear" id="logOut">
+        </form>
+    <h2>Agregar un video</h2>
     <form method="post">
         <input type="text" id="descriptionVideo" placeholder="description">
         <br>
@@ -14,9 +31,9 @@
         <br>
         <input type="submit" value="Agregar video" id="addVideo">
     </form>
-    <h3>Lista de videos</h3>
+    <h2>Lista de videos</h2>
     <ul id='list'></ul>
 
-<script type="text/javascript" src="/public/videoList.js"></script>
+
 </body>
 </html>

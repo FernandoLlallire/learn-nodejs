@@ -15,14 +15,15 @@
         <br>
         <input type="password" name="confirmPassword" id="confirmPassword" placeholder="confirm password" required>
         <br>
-        <input type="submit" value="registrar">
+        <input type="submit" value="registrar" id="createUser">
     </form>
     <h4>LogIn</h4>
     <form action="/logIn" method="post" enctype="application/x-www-form-urlencoded">
-        <input type="email" name="userName" id="userName" placeholder="Ingrese su mail" required>
+        <input type="email" name="userName" id="logInUserName" placeholder="Ingrese su mail" required>
         <br>
-        <input type="password" name="password" id="password" placeholder="password" required>
+        <input type="password" name="password" id="logInPassword" placeholder="password" required>
         <br>
-        <input type="submit" value="Logear">
+        <input type="submit" value="Logear" id="logUser">
+    <script type="text/javascript" src="/public/userFront.js"></script>        
 </body>
 </html>

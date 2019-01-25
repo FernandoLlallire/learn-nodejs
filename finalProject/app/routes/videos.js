@@ -34,7 +34,8 @@ const videoAddSchema = {
   router.use(middleware.verifyTokenHeader);
   router.get('/list', videoController.findAll);
   router.put('/add', expressJoiMiddleware(videoAddSchema, options), middleware.verifyRepeat, videoController.add);
-  router.delete('/delete/', expressJoiMiddleware(videoDeleteSchema, options),videoController.delete);
-  router.patch('/update/', expressJoiMiddleware(videoUpdateSchema, options), middleware.verifyRepeatNewVideo, videoController.update)
+  router.delete('/delete', expressJoiMiddleware(videoDeleteSchema, options),videoController.delete);
+  router.patch('/update', expressJoiMiddleware(videoUpdateSchema, options), middleware.verifyRepeatNewVideo, videoController.update)
+
 
   module.exports = router;
