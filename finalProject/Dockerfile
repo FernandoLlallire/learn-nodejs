@@ -6,6 +6,7 @@ RUN npm install nodemon -g
 
 WORKDIR /src
 ADD app/package.json /src/package.json
+
 RUN npm install
 
 ADD app/nodemon.json /src/nodemon.json

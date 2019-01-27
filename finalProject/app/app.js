@@ -4,7 +4,6 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const user = require('./routes/users');
 const video = require('./routes/videos');
-const cookieParser = require('cookie-parser');
 const swaggerUi = require('swagger-ui-express');
 /*
 Hay que tener cuidado al pasar de yaml a json necesitamos algo que convierta los formatos.
