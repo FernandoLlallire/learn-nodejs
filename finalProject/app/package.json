@@ -19,7 +19,7 @@
     "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.4.3",
     "morgan": "^1.9.1",
-    "node-fetch": "^2.3.0"
+    "node-fetch": "^3.1.1"
   },
   "dependencies": {
     "swagger-ui-express": "^4.0.2",
