@@ -12,7 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "swagger-express-mw": "^0.7.0",
     "swagger-tools": "^0.10.4"
   }
